@@ -26,11 +26,18 @@ import store              from '../../store'
 import {NICHI_UNN_HYOU , 
        TAIOUHYOU , 
        SYUKUYOUREKI}      from "../ObjectData"
+import { db }             from '../../firebase'
+import { doc , 
+        collection,
+        getDocs ,
+        updateDoc,}       from 'firebase/firestore'
+import { firebaseApp }    from "../../firebase"
 
 ////////////////////////////////////////////
 // 定数
 ////////////////////////////////////////////
-const weekday = ["日","月","火","水","木","金","土"]
+const weekday        = ["日","月","火","水","木","金","土"]
+const DayUnnHyouData = "DayUnHyouData"
 
 ////////////////////////////////////////////
 // スタイル
@@ -91,16 +98,41 @@ const BootstrapButton = styled(Button)({
 
 function 日運表() {
   // ------------------入力系変数------------------
-  const [daydata , setDayData] = useState([])    // 日運表を格納
-  const [year    , setYear]    = useState("") // 年を格納
-  const [month   , setMonth]   = useState("") // 月を格納
-  const [maxdate , setMaxDate] = useState("") // 月の最大日数
-  var DayDataAry             = []
-  const history = useHistory()
+  const [daydata   , setDayData]   = useState([]) // 日運表を格納
+  const [year      , setYear]      = useState("") // 年を格納
+  const [month     , setMonth]     = useState("") // 月を格納
+  const [maxdate   , setMaxDate]   = useState("") // 月の最大日数
+  const [fetchdata , setFetchData] = useState("") // firebaseから取得したデータ
+  var DayDataAry       = []
+  var FirebaseDataAry  = []
+  const history        = useHistory()
+
+  // firebaseから月運表データを取得
+  const fetchNichiUnnData = () => {
+    const firestore = firebaseApp.firestore
+    getDocs(collection(db, DayUnnHyouData )).then((querySnapshot)=>{
+      querySnapshot.forEach((document) => {        
+        // バイオリズム取得
+        const BuffBaiorizum = NICHI_UNN_HYOU.filter(item => item.DayBaiorizumNum == document.data().DayBaiorizumNum)
+        console.log("書き換え前 => " , BuffBaiorizum[0].DayBaiorizumText)
+        BuffBaiorizum[0].DayBaiorizumText = document.data().DayBaiorizumText
+        console.log("書き換え後 => " , BuffBaiorizum[0].DayBaiorizumText)
+        FirebaseDataAry.push({
+          ...document.data(),
+        })  
+      })
+    }).then(()=>{
+      setFetchData([...FirebaseDataAry])
+    })
+  }
 
   // 初回起動時の処理
   useEffect(() => {
     console.log("==================日運表初回起動==================")
+
+    // firebaseから日運表データを取得
+    fetchNichiUnnData()
+
     // 日付を取得する
     // 今日の日付データをcurrentDateに格納
     const currentDate = new Date()
@@ -121,8 +153,6 @@ function 日運表() {
       const BuffYear = SYUKUYOUREKI.filter(item => item.year == Number(currentDate.getFullYear()) && item.month == Number(currentDate.getMonth() + 1) && item.day == iDate)
       console.log("★宿曜番号 => " , BuffYear[0].num)
       getYadoName( BuffYear[0].num)
-      // // 宿曜歴番号を算出する
-      // getCalcNumYado(BuffYear[0].num , currentDate.getFullYear() , currentDate.getMonth() + 1 , iDate)
 
       // 宿曜暦名を取得する
       // バイオリズムを算出
@@ -159,41 +189,41 @@ function 日運表() {
     console.log("DayDataAry",DayDataAry)
   }
 
-  // 宿曜歴番号を算出する
-  const getCalcNumYado = (getNum , getYear , getMonth , getDay) => {
-    console.log(getNum , getYear , getMonth , getDay)
-    var numBuff = getNum // 宿曜暦番号を代入
-    numBuff = numBuff -1
-    var i
-    var j
-    // 月をループ
-    for (i = 1 ; i <=12 ; i++){
-      // 日をループ
-      for(j = 1 ; j <= 31; j++){
-        var date = new Date(getYear,i-1,j) // 月は「0」を起点とするので「-1」で調整
-        var iMonth = date.getMonth() + 1;
-        var result
+  // // 宿曜歴番号を算出する
+  // const getCalcNumYado = (getNum , getYear , getMonth , getDay) => {
+  //   console.log(getNum , getYear , getMonth , getDay)
+  //   var numBuff = getNum // 宿曜暦番号を代入
+  //   numBuff = numBuff -1
+  //   var i
+  //   var j
+  //   // 月をループ
+  //   for (i = 1 ; i <=12 ; i++){
+  //     // 日をループ
+  //     for(j = 1 ; j <= 31; j++){
+  //       var date = new Date(getYear,i-1,j) // 月は「0」を起点とするので「-1」で調整
+  //       var iMonth = date.getMonth() + 1;
+  //       var result
 
-        if(i==iMonth){
-          result = "有効な日付"
-          numBuff++ // 宿曜暦番号を加算
+  //       if(i==iMonth){
+  //         result = "有効な日付"
+  //         numBuff++ // 宿曜暦番号を加算
 
-          // 宿曜暦番号は27が上限値
-          if(numBuff > 27){
-            numBuff = 1
-          }
-          if(i == getMonth && j == getDay){
-            // 宿曜歴を取得する
-            console.log(getMonth , "月" , getDay , "日： numBuff =>" , numBuff)
-            getYadoName(numBuff)
-          }
+  //         // 宿曜暦番号は27が上限値
+  //         if(numBuff > 27){
+  //           numBuff = 1
+  //         }
+  //         if(i == getMonth && j == getDay){
+  //           // 宿曜歴を取得する
+  //           console.log(getMonth , "月" , getDay , "日： numBuff =>" , numBuff)
+  //           getYadoName(numBuff)
+  //         }
   
-        } else {
-          result = "★無効な日付★"
-        }
-      }
-    }
-  }
+  //       } else {
+  //         result = "★無効な日付★"
+  //       }
+  //     }
+  //   }
+  // }
 
   const getYadoName = (getNum) => {
   // 宿曜歴を取得する
@@ -250,7 +280,10 @@ function 日運表() {
   // 日運表を取得するボタンクリック時の処理
   const getNichiUnHyou = () => {
     console.log("===================更新結果を表示=======================")
-    console.log("DayDataAry => ",DayDataAry)
+    
+    // firebaseから日運表データを取得
+    fetchNichiUnnData()
+
     // 月を上げる
     setMonth(month)
 
@@ -428,13 +461,13 @@ function 日運表() {
               onClick = {(e) => handleClickHome(e.target.link)}/>
           </Grid>
           <Grid item xs={4} align="center">
-            {/* <DayDataButton
+            <DayDataButton
               id      = "daydataedit"
               text    = "日運表データを修正する"
               variant = "contained"
               xs      = "12"
               link    = "/daychart/edit"
-              onClick = {(e) => handleClickUpDate(e.target.link)}/> */}
+              onClick = {(e) => handleClickUpDate(e.target.link)}/>
           </Grid>
         </Grid>
         <br/>

@@ -11,9 +11,108 @@ import Header             from "../Header"
 import DayDataEditButton  from "./DayDataEditButton"
 import DayDataEditTable from "./DayDataEditTable"
 import DayDataEditTable_2 from "./DayDataEditTable-2"
+import { styled }         from '@mui/material/styles';
+import Table              from '@mui/material/Table';
+import TableBody          from '@mui/material/TableBody';
+import TableCell, 
+     { tableCellClasses } from '@mui/material/TableCell';
+import TableContainer     from '@mui/material/TableContainer';
+import TableHead          from '@mui/material/TableHead';
+import TableRow           from '@mui/material/TableRow';
+import Paper              from '@mui/material/Paper';
+import { db }             from '../../firebase'
+import { doc , 
+         collection,
+         getDocs ,
+         updateDoc,}      from 'firebase/firestore'
+import { firebaseApp }    from "../../firebase"
+import Dialog             from './Dialog'
+
+////////////////////////////////////////////
+//　定数
+////////////////////////////////////////////
+const DayUnnHyouData = "DayUnHyouData"
+
+////////////////////////////////////////////
+// スタイル
+////////////////////////////////////////////
+const BootstrapButton = styled(Button)({
+  boxShadow: 'none',
+  textTransform: 'none',
+  fontSize: 16,
+  padding: '6px 12px',
+  border: '1px solid',
+  lineHeight: 1.5,
+  backgroundColor: '#ff5757',
+  borderColor: '#EC6671',
+  color : '#ffffff',
+  fontFamily: [
+    '-apple-system',
+    'BlinkMacSystemFont',
+    '"Segoe UI"',
+    'Roboto',
+    '"Helvetica Neue"',
+    'Arial',
+    'sans-serif',
+    '"Apple Color Emoji"',
+    '"Segoe UI Emoji"',
+    '"Segoe UI Symbol"',
+  ].join(','),
+  '&:hover': {
+    backgroundColor: '#EC6671',
+    borderColor: '#EC6671',
+    boxShadow: 'none',
+  },
+  '&:active': {
+    boxShadow: 'none',
+    backgroundColor: '#EC6671',
+    borderColor: '#EC6671',
+  },
+})
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: "#ff5757",
+    color: "#ffffff",
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}))
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  '&:nth-of-type(odd)': {
+    backgroundColor: theme.palette.action.hover,
+  },
+  // hide last border
+  '&:last-child td, &:last-child th': {
+    border: 0,
+  },
+}))
 
 function 日運表データ編集() {
+  const [baiorizum , setBaiorizum] = useState()
+  const DataAry = []
   const history = useHistory()
+
+  // 初回起動時
+  useEffect(() => {
+    fetchNichiUnnBaiorizumData()
+  },[])
+
+  // firestoreから日運表データの情報取得
+  const fetchNichiUnnBaiorizumData = () => {
+    const firestore = firebaseApp.firestore
+    getDocs(collection(db, DayUnnHyouData)).then((querySnapshot)=>{
+      querySnapshot.forEach((document) => {
+        DataAry.push({
+          ...document.data(),
+        })
+      })
+    }).then(()=>{
+      console.log("DataAry : " , DataAry)
+      setBaiorizum([...DataAry])
+    })
+    console.log(DataAry);
+  }
 
   return (
       <Container maxWidth="lg">
@@ -28,23 +127,15 @@ function 日運表データ編集() {
           </Grid>
 
           {/* ボタン表示領域 */}
-          <Grid item xs={4} align="center">
-            <DayDataEditButton
-                id      = "update"
-                text    = "更新する"
-                variant = "contained"
-                xs      = "12"
-                link    = "/daychart"/>
-          </Grid>
-          <Grid item xs={4} align="center">
-            <DayDataEditButton
-                id      = "back"
-                text    = "日運表画面へ戻る"
-                variant = "contained"
-                xs      = "12"
-                link    = "/daychart"/>
-          </Grid>
-          <Grid item xs={4} align="center">
+          <Grid item xs={12} align="center">
+            <BootstrapButton
+              disableRipple
+              id      = "Daydataupdate"
+              text    = "編集した情報で表示する"
+              variant = "contained"
+              xs      = "12"
+              onClick = {fetchNichiUnnBaiorizumData}
+              >編集した情報で再表示する</BootstrapButton>
           </Grid>
 
           {/* バイオリズム表領域 */}
@@ -54,31 +145,54 @@ function 日運表データ編集() {
             <Grid item xs={12} align="left">
               <Typography variant="h6">バイオリズム表</Typography >
             </Grid>
-            <DayDataEditTable/>
-          </Grid>
-          <Grid item xs={1} align="center">
-          </Grid>
 
-          <Grid item xs={1} align="center">
-          </Grid>
-          <Grid item xs={10} align="center">
-            <Grid item xs={12} align="left">
-              <Typography variant="h6">日運の宿番号表</Typography >
-            </Grid>
-            <DayDataEditTable_2/>
+            <TableContainer component={Paper}>
+              <Table sx={{ minWidth: 700 }} aria-label="customized table">
+                {/* ヘッダー部分 */}
+                <TableHead>
+                  <TableRow>
+                    <StyledTableCell align="center">バイオリズム番号</StyledTableCell>
+                    <StyledTableCell align="center">リズム</StyledTableCell>
+                    <StyledTableCell align="center">サイクル</StyledTableCell>
+                    <StyledTableCell align="center">日運バイオリズム</StyledTableCell>
+                  </TableRow>
+                </TableHead>
+
+                {/* ボディー部分 */}
+                <TableBody>
+                  {baiorizum ? (baiorizum.sort().map((item) => (
+                  <StyledTableRow key={item.DayBaiorizumNum}>
+                    <StyledTableCell 
+                      align="center" 
+                      key={item.DayBaiorizumNum}>{item.DayBaiorizumNum}</StyledTableCell>
+                    <StyledTableCell
+                      align="center" 
+                      key={item.DayRizum}>{item.DayRizum}</StyledTableCell>
+                    <StyledTableCell
+                      align="center" 
+                      key={item.DayCycle}>{item.DayCycle}</StyledTableCell>
+                    <StyledTableCell align="center" key={item.DayBaiorizumNum} >
+                      <Dialog 
+                        title = {item.sub_Text}
+                        text  = {item.DayBaiorizumText}
+                        id    = {item.DayBaiorizumNum}
+                        type  = "DayBaiorizumText"/></StyledTableCell>
+                  </StyledTableRow>
+                ))) : 
+                  <StyledTableRow >
+                      <StyledTableCell align="center">-</StyledTableCell>
+                      <StyledTableCell align="center">-</StyledTableCell>
+                      <StyledTableCell align="center">-</StyledTableCell>
+                    </StyledTableRow>}
+                </TableBody>
+              </Table>
+            </TableContainer>
+
           </Grid>
           <Grid item xs={1} align="center">
           </Grid>
 
           {/* ボタン表示領域 */}
-          <Grid item xs={4} align="center">
-            <DayDataEditButton
-                id      = "update"
-                text    = "更新する"
-                variant = "contained"
-                xs      = "12"
-                link    = "/daychart"/>
-          </Grid>
           <Grid item xs={4} align="center">
             <DayDataEditButton
                 id      = "back"

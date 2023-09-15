@@ -13,8 +13,8 @@ const BootstrapButton = styled(Button)({
   padding: '6px 12px',
   border: '1px solid',
   lineHeight: 1.5,
-  backgroundColor: '#EC6671',
-  borderColor: '#EC6671',
+  backgroundColor: '#ff5757',
+  borderColor: '#ff5757',
   fontFamily: [
     '-apple-system',
     'BlinkMacSystemFont',

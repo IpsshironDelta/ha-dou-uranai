@@ -120,6 +120,7 @@ function 年運表() {
       setFetchData([...FirebaseDataAry])
     })
   }
+
   // 初回起動時の処理
   useEffect(() => {
     console.log("================年運表初回起動================")
