@@ -23,6 +23,17 @@ import Paper              from '@mui/material/Paper';
 import store              from '../../store'
 import {NENN_UNN_BAIORIZUM ,
        SYUUKI}            from "../ObjectData"
+import { db }             from '../../firebase'
+import { doc , 
+        collection,
+        getDocs ,
+        updateDoc,}       from 'firebase/firestore'
+import { firebaseApp }    from "../../firebase"
+
+////////////////////////////////////////////
+//　定数
+////////////////////////////////////////////
+const NennUnnHyouData = "YearUnHyouData"
 
 ////////////////////////////////////////////
 // スタイル
@@ -81,17 +92,40 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 function 年運表() {
   // ------------------入力系変数------------------
-  const [yeardata , setYearData] = useState()   // 年運表を格納
-  const [year     , setYear]     = useState("") // 年を格納
-  const [month   , setMonth]   = useState("")   // 月を格納
-  const [maxdate , setMaxDate] = useState("")   // 月の最大日数
-  const [getage   , setGetAge]   = useState("") // 取得した年齢
-  const history = useHistory()
-  const YearDataAry = []
+  const [yeardata  , setYearData]  = useState()   // 年運表を格納
+  const [year      , setYear]      = useState("") // 年を格納
+  const [month     , setMonth]     = useState("") // 月を格納
+  const [maxdate   , setMaxDate]   = useState("") // 月の最大日数
+  const [getage    , setGetAge]    = useState("") // 取得した年齢
+  const [fetchdata , setFetchData] = useState("") // firebaseから取得したデータ
+  const history         = useHistory()
+  const YearDataAry     = []
+  const FirebaseDataAry = []
   
+  // firebaseから年運表データを取得
+  const fetchNennUnnData = () => {
+    const firestore = firebaseApp.firestore
+    getDocs(collection(db, NennUnnHyouData )).then((querySnapshot)=>{
+      querySnapshot.forEach((document) => {        
+        // バイオリズム取得
+        const BuffBaiorizum = NENN_UNN_BAIORIZUM.filter(item => item.BaiorizumNum == document.data().YearBaiorizumNum)
+        console.log("書き換え前 => " , BuffBaiorizum[0].BaiorizumText)
+        BuffBaiorizum[0].BaiorizumText = document.data().YearBaiorizumText
+        console.log("書き換え後 => " , BuffBaiorizum[0].BaiorizumText)
+        FirebaseDataAry.push({
+          ...document.data(),
+        })  
+      })
+    }).then(()=>{
+      setFetchData([...FirebaseDataAry])
+    })
+  }
   // 初回起動時の処理
   useEffect(() => {
     console.log("================年運表初回起動================")
+    // firebaseから年運表データを取得
+    fetchNennUnnData()
+
     // 日付を取得する
     // 今日の日付データをcurrentDateに格納
     const currentDate = new Date()
@@ -145,7 +179,7 @@ function 年運表() {
         Year              : currentDate.getFullYear() + i ,
         Age               : BuffAge + i  ,
         YadoName          : BuffSyuuki[0].SyuukiYado,
-        YearBaiorizumName : BuffBaiorizum[0].Rizum,
+        YearRizum         : BuffBaiorizum[0].Rizum,
         YearBaiorizumText : BuffBaiorizum[0].BaiorizumText
       })
     }
@@ -155,6 +189,9 @@ function 年運表() {
   // 「年運表を取得する」ボタンクリック時の処理
   const getNennUnHyou = () => {
     console.log("================年運表更新時================")
+    // firebaseから年運表データを取得
+    fetchNennUnnData()
+
     // 日付を取得する
     // 今日の日付データをcurrentDateに格納
     const currentDate = new Date()
@@ -200,17 +237,19 @@ function 年運表() {
 
       // バイオリズム取得
       const BuffBaiorizum = NENN_UNN_BAIORIZUM.filter(item => item.BaiorizumNum == BaiorizumNum)
-      console.log("BuffBaiorizum => " , BuffBaiorizum[0].Rizum)
-
+      console.log("BuffBaiorizum => " , BuffBaiorizum[0].BaiorizumNum)
+      console.log("i => " , i)
       YearDataAry.push({
         Year              : Number(year) + i ,
         Age               : BuffAge + i  ,
         YadoName          : BuffSyuuki[0].SyuukiYado,
-        YearBaiorizumName : BuffBaiorizum[0].Rizum,
+        YearRizum         : BuffBaiorizum[0].Rizum,
         YearBaiorizumText : BuffBaiorizum[0].BaiorizumText
       })
+      console.log(YearDataAry)
     }
     setYearData([...YearDataAry])
+
   }
 
   return (
@@ -277,7 +316,7 @@ function 年運表() {
                       <StyledTableCell align="center">{item.Year}年</StyledTableCell>
                       <StyledTableCell align="center">{item.Age}歳</StyledTableCell>
                       <StyledTableCell align="center">{item.YadoName}</StyledTableCell>
-                      <StyledTableCell align="center">{item.YearBaiorizumName}</StyledTableCell>
+                      <StyledTableCell align="center">{item.YearRizum}</StyledTableCell>
                       <StyledTableCell align="left">{item.YearBaiorizumText}</StyledTableCell>
                     </StyledTableRow>
                   ))) : 
@@ -310,12 +349,12 @@ function 年運表() {
               link    = "/"/>
           </Grid>
           <Grid item xs={4} align="center">
-            {/* <YearDataButton
+            <YearDataButton
               id      = "yeardataedit"
               text    = "年運表データを修正する"
               variant = "contained"
               xs      = "12"
-              link    = "/yearchart/edit"/> */}
+              link    = "/yearchart/edit"/>
           </Grid>
         </Grid>
         <br/>

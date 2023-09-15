@@ -9,7 +9,6 @@ import Typography    from '@mui/material/Typography'
 import { useHistory } from "react-router-dom";
 import Header from "../Header"
 import KojinEditButton from "./KojinEditButton"
-import KojinEditDataTable from "./KojinEditDataTable"
 import { styled }         from '@mui/material/styles';
 import Table              from '@mui/material/Table';
 import TableBody          from '@mui/material/TableBody';
@@ -19,14 +18,12 @@ import TableContainer     from '@mui/material/TableContainer';
 import TableHead          from '@mui/material/TableHead';
 import TableRow           from '@mui/material/TableRow';
 import Paper              from '@mui/material/Paper';
-import store              from '../../store'
 import { db }               from '../../firebase'
 import { doc , 
          collection,
          getDocs ,
          updateDoc,}        from 'firebase/firestore'
 import { firebaseApp }      from "../../firebase"
-import TextField          from '@mui/material/TextField';
 import Dialog from './Dialog'
 
 ////////////////////////////////////////////
@@ -97,7 +94,6 @@ function 個人鑑定編集(data) {
   useEffect(() => {
     fetchKojinKanteiData()
   },[])
-
 
   // firestoreから個人鑑定データの情報取得
   const fetchKojinKanteiData = () => {
