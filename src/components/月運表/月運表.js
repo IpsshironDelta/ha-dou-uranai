@@ -292,11 +292,11 @@ function 月運表() {
             <BootstrapButton 
               disableRipple
               id      = "getgetsununn"
-              text    = "月運表を取得する"
+              text    = "月運表を再表示する"
               variant = "contained"
               xs      = "12"
               onClick = {getGetsuUnHyou}
-              >月運表を取得する</BootstrapButton>
+              >月運表を再表示する</BootstrapButton>
           </Grid>
 
 

@@ -285,11 +285,11 @@ function 年運表() {
             <BootstrapButton 
               disableRipple
               id      = "getnennunn"
-              text    = "年運表を取得する"
+              text    = "年運表を再表示する"
               variant = "contained"
               xs      = "12"
               onClick = {getNennUnHyou}
-              >年運表を取得する</BootstrapButton>
+              >年運表を再表示する</BootstrapButton>
           </Grid>
           <Grid item xs={1} align="center">
           </Grid>

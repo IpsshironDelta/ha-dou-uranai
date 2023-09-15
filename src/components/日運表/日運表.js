@@ -384,11 +384,11 @@ function 日運表() {
                 <BootstrapButton 
                   disableRipple
                   id      = "getnithiunn"
-                  text    = "日運表を取得する"
+                  text    = "日運表を再表示する"
                   variant = "contained"
                   xs      = "12"
                   onClick = {getNichiUnHyou}
-                  >日運表を取得する</BootstrapButton>
+                  >日運表を再表示する</BootstrapButton>
               </Grid>
             </Grid>
             <br/>
