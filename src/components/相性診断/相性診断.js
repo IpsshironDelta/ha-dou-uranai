@@ -442,7 +442,7 @@ function 相性診断() {
   }
 
   return (
-      <Container maxWidth="lg">
+      <Container maxWidth="sm">
         <Box sx={{ flexGrow: 1,
                    bgcolor: '#fce9ed' }}>
         <Header/>
@@ -455,10 +455,10 @@ function 相性診断() {
           </Grid>
 
           {/* 名まえ入力欄 */}
-          <Grid item xs={6} align="right">
+          <Grid item xs={7} align="right">
             <Typography variant="h6">鑑定書に表示する自分側の名前</Typography >
           </Grid>
-          <Grid item xs={6} align="left">
+          <Grid item xs={5} align="left">
             <TextField
               variant="standard"
               value ={name}
@@ -468,7 +468,7 @@ function 相性診断() {
           </Grid>
 
           {/* 生年月日入力欄 */}
-          <Grid item xs = {2} align = "right">
+          <Grid item xs = {3} align = "right">
             <YearSelect
               id        = "AisyouSelectYear"
               label     = "年を選択"
@@ -479,7 +479,7 @@ function 相性診断() {
           <Grid item xs = {1} align = "left">
             <Typography>年</Typography>
           </Grid>
-          <Grid item xs = {2} align = "right">
+          <Grid item xs = {3} align = "right">
             <MonthSelect
               id       = "KojinSelectMonth"
               label    = "月を選択"
@@ -490,7 +490,7 @@ function 相性診断() {
           <Grid item xs = {1} align = "left">
             <Typography>月</Typography>
           </Grid>
-          <Grid item xs = {2} align = "right">
+          <Grid item xs = {3} align = "right">
             <DaySelect
               id        = "KojinSelectDay"
               label     = "日を選択"
@@ -503,7 +503,7 @@ function 相性診断() {
           </Grid>
 
           {/* 性別のラジオボタン */}
-          <Grid item xs={3} align="center">
+          <Grid item xs={12} align="center">
             <RadioGroup
               id       = "KojinRadioGroup"
               value    = {radio}
@@ -512,16 +512,18 @@ function 相性診断() {
           </Grid>
 
         </Grid>
+        <br/>
+
         <Grid container spacing={2}>
           <Grid item xs={12} align="center">
             <Typography variant="h5">相手の生年月日の入力</Typography >
           </Grid>
 
           {/* 名まえ入力欄 */}
-          <Grid item xs={6} align="right">
+          <Grid item xs={7} align="right">
             <Typography variant="h6">鑑定書に表示する相手側の名前</Typography >
           </Grid>
-          <Grid item xs={6} align="left">
+          <Grid item xs={5} align="left">
             <TextField
               variant="standard"
               value ={partnername}
@@ -531,7 +533,7 @@ function 相性診断() {
           </Grid>
 
           {/* 生年月日入力欄 */}
-          <Grid item xs = {2} align = "right">
+          <Grid item xs = {3} align = "right">
             <PartnerYearSelect
               id        = "AisyouSelectYear"
               label     = "年を選択"
@@ -542,7 +544,7 @@ function 相性診断() {
           <Grid item xs = {1} align = "left">
             <Typography>年</Typography>
           </Grid>
-          <Grid item xs = {2} align = "right">
+          <Grid item xs = {3} align = "right">
             <PartnerMonthSelect
               id       = "KojinSelectMonth"
               label    = "月を選択"
@@ -553,7 +555,7 @@ function 相性診断() {
           <Grid item xs = {1} align = "left">
             <Typography>月</Typography>
           </Grid>
-          <Grid item xs = {2} align = "right">
+          <Grid item xs = {3} align = "right">
             <PartnerDaySelect
               id        = "KojinSelectDay"
               label     = "日を選択"
@@ -566,7 +568,7 @@ function 相性診断() {
           </Grid>
 
           {/* 性別のラジオボタン */}
-          <Grid item xs={3} align="center">
+          <Grid item xs={12} align="center">
             <PartnerRadioGroup
               id       = "KojinRadioGroup"
               value    = {partnerradio}
@@ -593,7 +595,7 @@ function 相性診断() {
           <Grid item xs={4} align="center">
             <AisyouButton
                 id      = "kanteihensyuu"
-                text    = "相性鑑定データ編集画面へ"
+                text    = "相性鑑定内容編集"
                 variant = "contained"
                 xs      = "12"
                 link    = "/aisyou/edit"

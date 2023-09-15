@@ -213,7 +213,7 @@ function 個人鑑定結果表示() {
 
   return (
     <div className='test' id='test'>
-      <Container maxWidth="lg">
+      <Container maxWidth="sm">
         <Box sx={{ flexGrow: 1,
                    bgcolor: '#fce9ed' }}>
         <Header/>
@@ -232,37 +232,37 @@ function 個人鑑定結果表示() {
               borderLeft    : CommonBorderSettind , 
               borderRight   : CommonBorderSettind ,}}>
             <Grid container spacing={1}>
-              <Grid item xs={2} align = "center">
+              <Grid item xs={6} align = "center">
                 <Typography 
                   sx = {{
                     fontSize      : 16,
                   }}>■　個人鑑定書　■</Typography>
               </Grid>
-              <Grid item xs={2} align = "center">
+              <Grid item xs={6} align = "center">
                 <Typography 
                   sx = {{
                     fontSize      : 16,
                   }}>{name} 様</Typography>
               </Grid>
-              <Grid item xs={3} align = "center">
+              <Grid item xs={6} align = "center">
                 <Typography 
                   sx = {{
                     fontSize      : 16,
                   }}>西暦{year}年{month}月{day}日 生まれ</Typography>
               </Grid>
-              <Grid item xs={1} align = "center">
+              <Grid item xs={2} align = "center">
                 <Typography 
                   sx = {{
                     fontSize      : 16,
                   }}>{age}歳</Typography>
               </Grid>
-              <Grid item xs={1} align = "center">
+              <Grid item xs={2} align = "center">
                 <Typography 
                   sx = {{
                     fontSize      : 16,
                   }}>{radio}性</Typography>
               </Grid>
-              <Grid item xs={3} align = "center">
+              <Grid item xs={12} align = "right">
                 <Typography 
                   sx = {{
                     fontSize      : 16,
@@ -276,13 +276,13 @@ function 個人鑑定結果表示() {
           <Grid item xs={1} align="center"></Grid>
             <Grid item xs={10} align="center">
               <Grid container spacing={1}>
-                <Grid item xs={2} align = "right">
+                <Grid item xs={3} align = "right">
                   <Typography 
                     sx = {{
                       fontSize      : 20,
                     }}>本命宿：</Typography>
                 </Grid>
-                <Grid item xs={10} align = "left">
+                <Grid item xs={9} align = "left">
                   <Typography 
                     sx = {{
                       fontSize      : 20,
@@ -296,27 +296,27 @@ function 個人鑑定結果表示() {
           <Grid item xs={1} align="center"></Grid>
             <Grid item xs={10} align="center">
               <Grid container spacing={1}>
-                <Grid item xs={6} align = "left">
+                <Grid item xs={12} align = "left">
                   <Typography 
                     sx = {{
-                      fontSize      : 14,
+                      fontSize      : 16,
                     }}>1.性格</Typography>
                   <TextField
                     defaultValue = {seikaku}
                     multiline
                     fullWidth 
-                    rows={15}/>
+                    rows={13}/>
                 </Grid>
-                <Grid item xs={6} align = "left">
+                <Grid item xs={12} align = "left">
                   <Typography 
                     sx = {{
-                      fontSize      : 14,
+                      fontSize      : 16,
                     }}>2.適職</Typography>
                   <TextField
                     defaultValue= {tekisyoku}
                     multiline
                     fullWidth 
-                    rows={15}/>
+                    rows={13}/>
                 </Grid>
               </Grid>
             </Grid>
@@ -325,27 +325,27 @@ function 個人鑑定結果表示() {
           <Grid item xs={1} align="center"></Grid>
             <Grid item xs={10} align="center">
               <Grid container spacing={1}>
-                <Grid item xs={6} align = "left">
+                <Grid item xs={12} align = "left">
                   <Typography 
                     sx = {{
-                      fontSize      : 14,
+                      fontSize      : 16,
                     }}>3.お金</Typography>
                   <TextField
                     defaultValue= {okane}
                     multiline
                     fullWidth 
-                    rows={15}/>
+                    rows={13}/>
                 </Grid>
-                <Grid item xs={6} align = "left">
+                <Grid item xs={12} align = "left">
                   <Typography 
                     sx = {{
-                      fontSize      : 14,
+                      fontSize      : 16,
                     }}>4.健康</Typography>
                   <TextField
                     defaultValue= {kenkou}
                     multiline
                     fullWidth 
-                    rows={15}/>
+                    rows={13}/>
                 </Grid>
               </Grid>
             </Grid>
@@ -354,27 +354,27 @@ function 個人鑑定結果表示() {
           <Grid item xs={1} align="center"></Grid>
             <Grid item xs={10} align="center">
               <Grid container spacing={1}>
-                <Grid item xs={6} align = "left">
+                <Grid item xs={12} align = "left">
                   <Typography 
                     sx = {{
-                      fontSize      : 14,
+                      fontSize      : 16,
                     }}>5.恋愛</Typography>
                   <TextField
                     defaultValue= {renai}
                     multiline
                     fullWidth 
-                    rows={15}/>
+                    rows={13}/>
                 </Grid>
-                <Grid item xs={6} align = "left">
+                <Grid item xs={12} align = "left">
                   <Typography 
                     sx = {{
-                      fontSize      : 14,
+                      fontSize      : 16,
                     }}>6.開運</Typography>
                   <TextField
                     defaultValue= {kaiunn}
                     multiline
                     fullWidth 
-                    rows={15}/>
+                    rows={13}/>
                 </Grid>
               </Grid>
             </Grid>
@@ -389,7 +389,7 @@ function 個人鑑定結果表示() {
             variant = "contained"
             xs      = "12"
             onClick = {printDocument}>
-              結果をPDFに出力する
+              PDF出力
             </BootstrapButton>
         </Grid>
         <Grid item xs={4} align="center">
@@ -401,7 +401,7 @@ function 個人鑑定結果表示() {
             xs      = "12"
             link    = "/kojin"
             onClick = {retrunKojin}
-            >個人鑑定画面へ戻る</BootstrapButton>
+            >戻る</BootstrapButton>
         </Grid>
       </Grid>
       <br/>

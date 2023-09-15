@@ -442,7 +442,7 @@ function 相性診断結果表示() {
 
   return (
     <div className='aisyou' id='test'>
-      <Container maxWidth="lg">
+      <Container maxWidth="sm">
         <Box sx={{ flexGrow: 1,
                    bgcolor: '#fce9ed' }}>
         <Header/>
@@ -461,57 +461,70 @@ function 相性診断結果表示() {
               borderLeft    : CommonBorderSettind , 
               borderRight   : CommonBorderSettind ,}}>
             <Grid container spacing={1}>
-              <Grid item xs={2} align = "center">
+              <Grid item xs={12} align = "center">
                 <Typography 
                   sx = {{
                     fontSize      : 16,
                   }}>■　相性診断書書　■</Typography>
               </Grid>
-              <Grid item xs={2} align = "center">
+
+              {/* 自分側の情報 */}
+              <Grid item xs={6} align = "right">
                 <Typography 
                   sx = {{
                     fontSize      : 16,
                   }}>{name} 様</Typography>
-                  <br/>
+              </Grid>
+              <Grid item xs={6} align = "left">
+                <Typography 
+                  sx = {{
+                    fontSize      : 16,
+                  }}>西暦{year}年{month}月{day}日　生まれ</Typography>
+              </Grid>
+              <Grid item xs={10} align = "right">
+                <Typography 
+                  sx = {{
+                    fontSize      : 16,
+                  }}>{age} 歳</Typography>
+              </Grid>
+              <Grid item xs={2} align = "left">
+                <Typography 
+                  sx = {{
+                    fontSize      : 16,
+                  }}>{radio}性</Typography>
+              </Grid>
+
+              <br/>
+
+              {/* 相手側の情報 */}
+              <Grid item xs={6} align = "right">
                 <Typography 
                   sx = {{
                     fontSize      : 16,
                   }}>{partnername} 様</Typography>
               </Grid>
-              <Grid item xs={3} align = "center">
-                <Typography 
-                  sx = {{
-                    fontSize      : 16,
-                  }}>西暦{year}年{month}月{day}日　生まれ</Typography>
-                  <br/>
+              <Grid item xs={6} align = "left">
                 <Typography 
                   sx = {{
                     fontSize      : 16,
                   }}>西暦{partneryear}年{partnermonth}月{partnerday}日　生まれ</Typography>
               </Grid>
-              <Grid item xs={1} align = "center">
-                <Typography 
-                  sx = {{
-                    fontSize      : 16,
-                  }}>{age} 歳</Typography>
-                  <br/>
+              <Grid item xs={10} align = "right">
                 <Typography 
                   sx = {{
                     fontSize      : 16,
                   }}>{partnerage} 歳</Typography>
               </Grid>
-              <Grid item xs={1} align = "center">
-                <Typography 
-                  sx = {{
-                    fontSize      : 16,
-                  }}>{radio}性</Typography>
-                <br/>
+              <Grid item xs={2} align = "left">
                 <Typography 
                   sx = {{
                     fontSize      : 16,
                   }}>{partnerradio}性</Typography>
               </Grid>
-              <Grid item xs={3} align = "center">
+
+              <br/><br/>
+
+              <Grid item xs={12} align = "right">
                 <Typography 
                   sx = {{
                     fontSize      : 16,
@@ -525,13 +538,13 @@ function 相性診断結果表示() {
           <Grid item xs={1} align="center"></Grid>
             <Grid item xs={10} align="center">
               <Grid container spacing={1}>
-                <Grid item xs={6} align = "center">
+                <Grid item xs={6} align = "left">
                   <Typography 
                     sx = {{
                       fontSize      : 20,
                     }}>自分側のホロスコープ</Typography>
                 </Grid>
-                <Grid item xs={6} align = "center">
+                <Grid item xs={6} align = "left">
                   <Typography 
                     sx = {{
                       fontSize      : 20,
@@ -545,25 +558,26 @@ function 相性診断結果表示() {
           <Grid item xs={1} align="center"></Grid>
             <Grid item xs={10} align="center">
               <Grid container spacing={1}>
-                <Grid item xs={3} align = "center">
+                <Grid item xs={6} align = "left">
                   <Typography 
                     sx = {{
                       fontSize      : 20,
                     }}>自分側の本命宿：</Typography>
                 </Grid>
-                <Grid item xs={3} align = "left">
-                  <Typography 
-                    sx = {{
-                      fontSize      : 20,
-                    }}>{yado}（{yomi}）</Typography>
-                </Grid>
-                <Grid item xs={3} align = "center">
+                <Grid item xs={6} align = "left">
                   <Typography 
                     sx = {{
                       fontSize      : 20,
                     }}>相手側の本命宿：</Typography>
                 </Grid>
-                <Grid item xs={3} align = "left">
+                <Grid item xs={6} align = "right">
+                  <Typography 
+                    sx = {{
+                      fontSize      : 20,
+                    }}>{yado}（{yomi}）</Typography>
+                </Grid>
+
+                <Grid item xs={6} align = "right">
                   <Typography 
                     sx = {{
                       fontSize      : 20,
@@ -605,27 +619,27 @@ function 相性診断結果表示() {
           <Grid item xs={1} align="center"></Grid>
             <Grid item xs={10} align="center">
               <Grid container spacing={1}>
-                <Grid item xs={6} align = "left">
+                <Grid item xs={12} align = "left">
                   <Typography 
                     sx = {{
-                      fontSize      : 14,
+                      fontSize      : 16,
                     }}>1.おふたりの関係</Typography>
                   <TextField
                     defaultValue = {kankei}
                     multiline
                     fullWidth 
-                    rows={17}/>
+                    rows={5}/>
                 </Grid>
-                <Grid item xs={6} align = "left">
+                <Grid item xs={12} align = "left">
                   <Typography 
                     sx = {{
-                      fontSize      : 14,
+                      fontSize      : 16,
                     }}>2.基本的な相性</Typography>
                   <TextField
                     defaultValue = {kihon}
                     multiline
                     fullWidth 
-                    rows={17}/>
+                    rows={15}/>
                 </Grid>
               </Grid>
             </Grid>
@@ -634,27 +648,27 @@ function 相性診断結果表示() {
           <Grid item xs={1} align="center"></Grid>
             <Grid item xs={10} align="center">
               <Grid container spacing={1}>
-                <Grid item xs={6} align = "left">
+                <Grid item xs={12} align = "left">
                   <Typography 
                     sx = {{
-                      fontSize      : 14,
+                      fontSize      : 16,
                     }}>3.恋愛関係の相性</Typography>
                   <TextField
                     defaultValue = {renai}
                     multiline
                     fullWidth 
-                    rows={17}/>
+                    rows={15}/>
                 </Grid>
-                <Grid item xs={6} align = "left">
+                <Grid item xs={12} align = "left">
                   <Typography 
                     sx = {{
-                      fontSize      : 14,
+                      fontSize      : 16,
                     }}>4.仕事関係の相性</Typography>
                   <TextField
                     defaultValue = {sigoto}
                     multiline
                     fullWidth 
-                    rows={17}/>
+                    rows={15}/>
                 </Grid>
               </Grid>
             </Grid>
@@ -663,10 +677,10 @@ function 相性診断結果表示() {
           <Grid item xs={1} align="center"></Grid>
             <Grid item xs={10} align="center">
               <Grid container spacing={1}>
-                <Grid item xs={6} align = "left">
+                <Grid item xs={12} align = "left">
                   <Typography 
                     sx = {{
-                      fontSize      : 14,
+                      fontSize      : 16,
                     }}>5.自分側から見た相手との関係</Typography>
                   <TextField
                     defaultValue = {userpartner}
@@ -674,10 +688,10 @@ function 相性診断結果表示() {
                     fullWidth 
                     rows={5}/>
                 </Grid>
-                <Grid item xs={6} align = "left">
+                <Grid item xs={12} align = "left">
                   <Typography 
                     sx = {{
-                      fontSize      : 14,
+                      fontSize      : 16,
                     }}>6.相手側から見た自分との関係</Typography>
                   <TextField
                     defaultValue = {partneruser}
@@ -698,7 +712,7 @@ function 相性診断結果表示() {
               variant = "contained"
               xs      = "12"
               onClick = {printDocument}>
-                結果をPDFに出力する
+                PDF出力
               </BootstrapButton>
           </Grid>
           <Grid item xs={4} align="center">
@@ -709,7 +723,7 @@ function 相性診断結果表示() {
               variant = "contained"
               xs      = "12"
               link    = "/aisyou"
-              onClick = {reterunAisyou}>相性診断画面へ戻る</BootstrapButton>
+              onClick = {reterunAisyou}>戻る</BootstrapButton>
           </Grid>
         </Grid>
         <br/>

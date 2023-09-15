@@ -103,7 +103,7 @@ function 個人鑑定() {
   }, [])
 
   return (
-      <Container maxWidth="lg">
+      <Container maxWidth="sm">
         <Box sx={{ flexGrow: 1,
                    bgcolor: '#fce9ed' }}>
         <Header/>
@@ -116,10 +116,10 @@ function 個人鑑定() {
           </Grid>
 
           {/* 名まえ入力欄 */}
-          <Grid item xs={6} align="right">
+          <Grid item xs={7} align="right">
             <Typography variant="h6">個人鑑定書に表示するお名前</Typography >
           </Grid>
-          <Grid item xs={6} align="left">
+          <Grid item xs={5} align="left">
             <TextField
               variant="standard"
               value ={name}
@@ -129,7 +129,7 @@ function 個人鑑定() {
           </Grid>
 
           {/* 生年月日入力欄 */}
-          <Grid item xs = {2} align = "right">
+          <Grid item xs = {3} align = "right">
             <YearSlect
               id        = "KojinSelectYear"
               label     = "年を選択"
@@ -140,7 +140,8 @@ function 個人鑑定() {
           <Grid item xs = {1} align = "left">
             <Typography>年</Typography>
           </Grid>
-          <Grid item xs = {2} align = "right">
+
+          <Grid item xs = {3} align = "right">
             <MonthSlect
               id       = "KojinSelectMonth"
               label    = "月を選択"
@@ -151,7 +152,8 @@ function 個人鑑定() {
           <Grid item xs = {1} align = "left">
             <Typography>月</Typography>
           </Grid>
-          <Grid item xs = {2} align = "right">
+
+          <Grid item xs = {3} align = "right">
             <DaySlect
               id        = "KojinSelectDay"
               label     = "日を選択"
@@ -164,7 +166,7 @@ function 個人鑑定() {
           </Grid>
 
           {/* 性別のラジオボタン */}
-          <Grid item xs={3} align="center">
+          <Grid item xs={12} align="center">
             <RadioGroup
               id       = "KojinRadioGroup"
               value    = {radio}
@@ -191,7 +193,7 @@ function 個人鑑定() {
           <Grid item xs={4} align="center">
             <KojinButton
               id      = "kojinedit"
-              text    = "個人鑑定データ編集画面へ"
+              text    = "個人鑑定内容編集"
               variant = "contained"
               xs      = "12"
               link    = "/kojin/edit"

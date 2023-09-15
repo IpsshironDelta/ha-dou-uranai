@@ -72,7 +72,7 @@ function MainPage() {
   }, [])
 
   return (
-      <Container maxWidth="lg">
+      <Container maxWidth="sm">
         <Box sx={{ flexGrow: 1,
                    bgcolor: '#fce9ed' }}>
         <Header/>
