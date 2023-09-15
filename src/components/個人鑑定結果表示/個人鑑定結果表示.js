@@ -232,25 +232,25 @@ function 個人鑑定結果表示() {
               borderLeft    : CommonBorderSettind , 
               borderRight   : CommonBorderSettind ,}}>
             <Grid container spacing={1}>
-              <Grid item xs={6} align = "center">
+              <Grid item xs={12} align = "center">
                 <Typography 
                   sx = {{
                     fontSize      : 16,
                   }}>■　個人鑑定書　■</Typography>
               </Grid>
-              <Grid item xs={6} align = "center">
+              <Grid item xs={5} align = "center">
                 <Typography 
                   sx = {{
                     fontSize      : 16,
                   }}>{name} 様</Typography>
               </Grid>
-              <Grid item xs={6} align = "center">
+              <Grid item xs={7} align = "right">
                 <Typography 
                   sx = {{
                     fontSize      : 16,
                   }}>西暦{year}年{month}月{day}日 生まれ</Typography>
               </Grid>
-              <Grid item xs={2} align = "center">
+              <Grid item xs={10} align = "right">
                 <Typography 
                   sx = {{
                     fontSize      : 16,

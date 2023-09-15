@@ -469,13 +469,13 @@ function 相性診断結果表示() {
               </Grid>
 
               {/* 自分側の情報 */}
-              <Grid item xs={6} align = "right">
+              <Grid item xs={5} align = "right">
                 <Typography 
                   sx = {{
                     fontSize      : 16,
                   }}>{name} 様</Typography>
               </Grid>
-              <Grid item xs={6} align = "left">
+              <Grid item xs={7} align = "right">
                 <Typography 
                   sx = {{
                     fontSize      : 16,
@@ -497,13 +497,13 @@ function 相性診断結果表示() {
               <br/>
 
               {/* 相手側の情報 */}
-              <Grid item xs={6} align = "right">
+              <Grid item xs={5} align = "right">
                 <Typography 
                   sx = {{
                     fontSize      : 16,
                   }}>{partnername} 様</Typography>
               </Grid>
-              <Grid item xs={6} align = "left">
+              <Grid item xs={7} align = "right">
                 <Typography 
                   sx = {{
                     fontSize      : 16,
