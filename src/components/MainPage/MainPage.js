@@ -11,7 +11,8 @@ import { useHistory } from "react-router-dom";
 import MainPageButton from "./MainPageButton"
 import Header         from "../Header"
 import { styled }     from '@mui/material/styles'
-import store          from '../../store';
+import store          from '../../store'
+import {firebaseApp }    from "../../firebase"
 
 /////////////////////////////////////////
 // スタイル
@@ -68,6 +69,21 @@ function MainPage() {
     setErrorMessage("命式をクリアしました。「年運表」「月運表」「日運表」を表示する際は再度命式を入力してください。")
     setError(true)
   }
+
+  // ユーザーが認証されていない場合、ログイン画面へ遷移する
+  console.log("HOGE")
+  firebaseApp.fireauth.onAuthStateChanged(user => {
+    console.log("FUGA")
+    if (!user) {
+      history.push("/login")
+      console.log("TEST")
+    }else{
+      store.getState().loginUserUID = user.uid
+      console.log("TEST" , user.uid)
+    }
+  })
+
+  // 初回起動時の処理
   useEffect(() => {
   }, [])
 
