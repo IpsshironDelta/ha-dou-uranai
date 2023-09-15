@@ -24,6 +24,17 @@ import Paper                from '@mui/material/Paper';
 import store                from '../../store'
 import {GETSU_UNN_SYUUKI , 
        GETSU_UNN_BAIORIZUM} from "../ObjectData"
+import { db }               from '../../firebase'
+import { doc , 
+        collection,
+        getDocs ,
+        updateDoc,}         from 'firebase/firestore'
+import { firebaseApp }      from "../../firebase"
+
+////////////////////////////////////////////
+//　定数
+////////////////////////////////////////////
+const GetsuUnnHyouData = "MonthUnHyouData"
 
 ////////////////////////////////////////////
 // スタイル
@@ -82,15 +93,39 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 function 月運表() {
   // ------------------入力系変数------------------
-  const [monthdata , setMonthData] = useState() // 年運表を格納
-  const [year     , setYear]     = useState("") // 年を格納
-  const [month   , setMonth]   = useState("")   // 月を格納
+  const [monthdata , setMonthData] = useState()   // 年運表を格納
+  const [year      , setYear]      = useState("") // 年を格納
+  const [month     , setMonth]     = useState("") // 月を格納
+  const [fetchdata , setFetchData] = useState("") // firebaseから取得したデータ
   const history = useHistory()
-  const MonthDataAry = []
+  const MonthDataAry    = []
+  const FirebaseDataAry = []
+
+  // firebaseから月運表データを取得
+  const fetchGetsuUnnData = () => {
+    const firestore = firebaseApp.firestore
+    getDocs(collection(db, GetsuUnnHyouData )).then((querySnapshot)=>{
+      querySnapshot.forEach((document) => {        
+        // バイオリズム取得
+        const BuffBaiorizum = GETSU_UNN_BAIORIZUM.filter(item => item.MonthBaiorizumNum == document.data().MonthBaiorizumNum)
+        console.log("書き換え前 => " , BuffBaiorizum[0].MonthBaiorizumText)
+        BuffBaiorizum[0].MonthBaiorizumText = document.data().MonthBaiorizumText
+        console.log("書き換え後 => " , BuffBaiorizum[0].MonthBaiorizumText)
+        FirebaseDataAry.push({
+          ...document.data(),
+        })  
+      })
+    }).then(()=>{
+      setFetchData([...FirebaseDataAry])
+    })
+  }
 
   // 初回起動時の処理
   useEffect(() => {
     console.log("================月運表初回起動================")
+    // firebaseから月運表データを取得
+    fetchGetsuUnnData()
+
     // 今日の日付データをcurrentDateに格納
     var currentDate = new Date()
     var getYear
@@ -153,6 +188,9 @@ function 月運表() {
   // 月運表を取得するボタンクリック時の処理
   const getGetsuUnHyou = () => {
     console.log("================月運表取得================")
+    // firebaseから月運表データを取得
+    fetchGetsuUnnData()
+
     // 今日の日付データをcurrentDateに格納
     var currentDate = new Date()
     var getYear
@@ -319,12 +357,12 @@ function 月運表() {
               link    = "/"/>
           </Grid>
           <Grid item xs={4} align="center">
-            {/* <MonthDataButton
+            <MonthDataButton
               id      = "monthdataedit"
               text    = "月運表データを修正する"
               variant = "contained"
               xs      = "12"
-              link    = "/monthchart/edit"/> */}
+              link    = "/monthchart/edit"/>
           </Grid>
         </Grid>
         <br/>

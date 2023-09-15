@@ -9,11 +9,108 @@ import Typography      from '@mui/material/Typography'
 import { useHistory }  from "react-router-dom";
 import Header          from "../Header"
 import MonthEditButton from "./MonthEditButton"
-import MonthDataEditTable from "./MonthDataEditTable"
-import MonthDataEditTable_2 from "./MonthDataEditTable-2"
+import { styled }         from '@mui/material/styles';
+import Table              from '@mui/material/Table';
+import TableBody          from '@mui/material/TableBody';
+import TableCell, 
+     { tableCellClasses } from '@mui/material/TableCell';
+import TableContainer     from '@mui/material/TableContainer';
+import TableHead          from '@mui/material/TableHead';
+import TableRow           from '@mui/material/TableRow';
+import Paper              from '@mui/material/Paper';
+import { db }             from '../../firebase'
+import { doc , 
+         collection,
+         getDocs ,
+         updateDoc,}      from 'firebase/firestore'
+import { firebaseApp }    from "../../firebase"
+import Dialog             from './Dialog'
+
+////////////////////////////////////////////
+//　定数
+////////////////////////////////////////////
+const GetsuUnnHyouData = "MonthUnHyouData"
+
+////////////////////////////////////////////
+// スタイル
+////////////////////////////////////////////
+const BootstrapButton = styled(Button)({
+  boxShadow: 'none',
+  textTransform: 'none',
+  fontSize: 16,
+  padding: '6px 12px',
+  border: '1px solid',
+  lineHeight: 1.5,
+  backgroundColor: '#ff5757',
+  borderColor: '#EC6671',
+  color : '#ffffff',
+  fontFamily: [
+    '-apple-system',
+    'BlinkMacSystemFont',
+    '"Segoe UI"',
+    'Roboto',
+    '"Helvetica Neue"',
+    'Arial',
+    'sans-serif',
+    '"Apple Color Emoji"',
+    '"Segoe UI Emoji"',
+    '"Segoe UI Symbol"',
+  ].join(','),
+  '&:hover': {
+    backgroundColor: '#EC6671',
+    borderColor: '#EC6671',
+    boxShadow: 'none',
+  },
+  '&:active': {
+    boxShadow: 'none',
+    backgroundColor: '#EC6671',
+    borderColor: '#EC6671',
+  },
+})
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: "#ff5757",
+    color: "#ffffff",
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}))
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  '&:nth-of-type(odd)': {
+    backgroundColor: theme.palette.action.hover,
+  },
+  // hide last border
+  '&:last-child td, &:last-child th': {
+    border: 0,
+  },
+}))
 
 function 月運表データ編集() {
+  const [baiorizum , setBaiorizum] = useState()
+  const DataAry = []
   const history = useHistory()
+
+  // 初回起動時
+  useEffect(() => {
+    fetchGetsuUnnBaiorizumData()
+  },[])
+
+  // firestoreから月運表データの情報取得
+  const fetchGetsuUnnBaiorizumData = () => {
+    const firestore = firebaseApp.firestore
+    getDocs(collection(db, GetsuUnnHyouData)).then((querySnapshot)=>{
+      querySnapshot.forEach((document) => {
+        DataAry.push({
+          ...document.data(),
+        })
+      })
+    }).then(()=>{
+      console.log("DataAry : " , DataAry)
+      setBaiorizum([...DataAry])
+    })
+    console.log(DataAry);
+  }
 
   return (
       <Container maxWidth="lg">
@@ -24,26 +121,19 @@ function 月運表データ編集() {
           {/* タイトル表示領域 */}
           <Grid item xs={12} align="center">
             <Typography variant="h4">月運表データ編集</Typography >
+            <Typography variant="h6">「月運バイオリズム」を書き換えると自動出力される鑑定文を変えることが出来ます。</Typography >
           </Grid>
 
           {/* ボタン表示領域 */}
-          <Grid item xs={4} align="center">
-          <MonthEditButton
-              id      = "update"
-              text    = "更新する"
+          <Grid item xs={12} align="center">
+            <BootstrapButton
+              disableRipple
+              id      = "Monthdataupdate"
+              text    = "編集した情報で表示する"
               variant = "contained"
               xs      = "12"
-              link    = "/monthchart"/>
-          </Grid>
-          <Grid item xs={4} align="center">
-            <MonthEditButton
-              id      = "back"
-              text    = "月運表画面へ戻る"
-              variant = "contained"
-              xs      = "12"
-              link    = "/monthchart"/>
-          </Grid>
-          <Grid item xs={4} align="center">
+              onClick = {fetchGetsuUnnBaiorizumData}
+              >編集した情報で再表示する</BootstrapButton>
           </Grid>
 
           {/* バイオリズム表領域 */}
@@ -53,36 +143,51 @@ function 月運表データ編集() {
             <Grid item xs={12} align="left">
               <Typography variant="h6">バイオリズム表</Typography >
             </Grid>
-            <MonthDataEditTable/>
+
+            <TableContainer component={Paper}>
+              <Table sx={{ minWidth: 700 }} aria-label="customized table">
+                {/* ヘッダー部分 */}
+                <TableHead>
+                  <TableRow>
+                    <StyledTableCell align="center">バイオリズム番号</StyledTableCell>
+                    <StyledTableCell align="center">リズム</StyledTableCell>
+                    <StyledTableCell align="center">月運バイオリズム</StyledTableCell>
+                  </TableRow>
+                </TableHead>
+
+                {/* ボディー部分 */}
+                <TableBody>
+                  {baiorizum ? (baiorizum.sort().map((item) => (
+                  <StyledTableRow key={item.MonthBaiorizumNum}>
+                    <StyledTableCell 
+                      align="center" 
+                      key={item.MonthBaiorizumNum}>{item.MonthBaiorizumNum}</StyledTableCell>
+                    <StyledTableCell
+                      align="center" 
+                      key={item.MonthRizum}>{item.MonthRizum}</StyledTableCell>
+                    <StyledTableCell align="center" key={item.MonthBaiorizumNum} >
+                      <Dialog 
+                        title = {item.sub_Text}
+                        text  = {item.MonthBaiorizumText}
+                        id    = {item.MonthBaiorizumNum}
+                        type  = "MonthBaiorizumText"/></StyledTableCell>
+                  </StyledTableRow>
+                ))) : 
+                  <StyledTableRow >
+                      <StyledTableCell align="center">-</StyledTableCell>
+                      <StyledTableCell align="center">-</StyledTableCell>
+                      <StyledTableCell align="center">-</StyledTableCell>
+                    </StyledTableRow>}
+                </TableBody>
+              </Table>
+            </TableContainer>
+
           </Grid>
           <Grid item xs={1} align="center">
           </Grid>
 
-          <Grid item xs={1} align="center">
-          </Grid>
-          <Grid item xs={10} align="center">
-            <Grid item xs={12} align="left">
-              <Typography variant="h6">12カ月周期の宿月運表</Typography >
-            </Grid>
-            <MonthDataEditTable_2/>
-            <Grid item xs={12} align="left">
-              <Typography 
-                sx = {{
-                  fontSize : 14,}}>※月運の切り替わりが新暦の1日になるように月運の宿をおおまかに変換しています。</Typography >
-            </Grid>
-          </Grid>
-          <Grid item xs={1} align="center">
-          </Grid>
 
           {/* ボタン表示領域 */}
-          <Grid item xs={4} align="center">
-          <MonthEditButton
-              id      = "update"
-              text    = "更新する"
-              variant = "contained"
-              xs      = "12"
-              link    = "/monthchart"/>
-          </Grid>
           <Grid item xs={4} align="center">
             <MonthEditButton
               id      = "back"
