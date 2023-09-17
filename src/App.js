@@ -1,23 +1,27 @@
-import React from 'react';
-import {BrowserRouter, Switch, Route} from "react-router-dom"
-import MainPage from './components/MainPage/MainPage';
-import KojinKantei from "./components/個人鑑定/個人鑑定"
-import KojinKanteiEdit from "./components/個人鑑定編集/個人鑑定編集"
-import KojinKekkaResult from "./components/個人鑑定結果表示/個人鑑定結果表示"
-import Aisyou from "./components/相性診断/相性診断"
-import AisyouEdit from "./components/相性鑑定編集/相性鑑定編集"
-import AisyouResult from "./components/相性診断結果表示/相性診断結果表示"
-import YearChart from "./components/年運表/年運表"
-import YearChartEdit from "./components/年運表データ編集/年運表データ編集"
-import MonthChart from "./components/月運表/月運表"
-import MonthChartEdit from "./components/月運表データ編集/月運表データ編集"
-import DayChart from "./components/日運表/日運表"
-import DayChartEdit from "./components/日運表データ編集/日運表データ編集"
-import SignUp from './components/SignUp/SignUp'
-import Login from './components/Login/Login'
-import ProfileEdit from './components/ProfileEdit/ProfileEdit'
-import PasswordReset from "./components/PasswordReset/PasswordReset"
-import TEST from "./components/TEST/test"
+import React             from 'react';
+import {BrowserRouter, 
+        Switch, 
+        Route}           from "react-router-dom"
+import MainPage          from './components/MainPage/MainPage';
+import KojinKantei       from "./components/個人鑑定/個人鑑定"
+import KojinKanteiEdit   from "./components/個人鑑定編集/個人鑑定編集"
+import KojinKekkaResult  from "./components/個人鑑定結果表示/個人鑑定結果表示"
+import Aisyou            from "./components/相性診断/相性診断"
+import AisyouEdit        from "./components/相性鑑定編集/相性鑑定編集"
+import AisyouResult      from "./components/相性診断結果表示/相性診断結果表示"
+import YearChart         from "./components/年運表/年運表"
+import YearChartEdit     from "./components/年運表データ編集/年運表データ編集"
+import MonthChart        from "./components/月運表/月運表"
+import MonthChartEdit    from "./components/月運表データ編集/月運表データ編集"
+import DayChart          from "./components/日運表/日運表"
+import DayChartEdit      from "./components/日運表データ編集/日運表データ編集"
+import SignUp            from './components/SignUp/SignUp'
+import Login             from './components/Login/Login'
+import ProfileEdit       from './components/ProfileEdit/ProfileEdit'
+import PasswordReset     from "./components/PasswordReset/PasswordReset"
+import KojinPDFOutPut    from "./components/KojinPrintScreen/PrintScreen"
+import AisyouPDFOutPut   from "./components/AisyouPrintScreen/PrintScreen"
+import TEST              from "./components/TEST/test"
 import './App.css';
 
 function App() {
@@ -102,9 +106,20 @@ function App() {
         <Route exact path="/daychart">
           <DayChart />
         </Route>
+
         {/* 日運表画面 */}
         <Route exact path="/daychart/edit">
           <DayChartEdit />
+        </Route>
+
+        {/* 個人鑑定PDF出力画面 */}
+        <Route exact path="/kojinprint">
+          <KojinPDFOutPut />
+        </Route>
+
+        {/* 相性診断PDF出力画面 */}
+        <Route exact path="/aisyouprint">
+          <AisyouPDFOutPut />
         </Route>
 
       </Switch>

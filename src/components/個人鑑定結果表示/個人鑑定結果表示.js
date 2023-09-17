@@ -113,13 +113,6 @@ function 個人鑑定結果表示() {
       console.log(event)
       var BuffTaiou = TAIOUHYOU.filter(item => item.num == event)
       console.log("★" , BuffTaiou[0].name,BuffTaiou[0].num)
-      // // 宿名を代入
-      // store.getState().syukuYouRekiName = BuffTaiou[0].name
-      // setYado(BuffTaiou[0].name)
-      
-      // // 読みを代入
-      // store.getState().syukuYouRekiYomi = BuffTaiou[0].yomi
-      // setYomi(BuffTaiou[0].yomi)
   
       const firestore = firebaseApp.firestore
       getDocs(collection(firestore, Kojinkantei_Data)).then((querySnapshot)=>{
@@ -194,17 +187,8 @@ function 個人鑑定結果表示() {
 
   // PDFに出力する
   const printDocument = () => {
-    const input = document.getElementById("test");
-    html2canvas(input).then((canvas) => {
-      const imgData = canvas.toDataURL("image/png");
-
-      const pdf = new jsPDF()
-      pdf.addImage(imgData, "SVG", 10, 10 , canvas.width/7 , canvas.height/7)
-      let FileName = String(nowYear) + String(nowMonth) + String(nowDay) + "_" + String(name)  + "様診断結果.pdf"
-      console.log(FileName)
-      pdf.save(FileName)
-    });
-  };
+    history.push("/kojinprint")
+  }
 
   // 個人鑑定へ戻るボタンクリック時の処理
   const retrunKojin = () => {

@@ -23,6 +23,7 @@ const initialState = {
   partnerMonth            : "" ,  // 相手の生年月日(月)
   partnerDay              : "" ,  // 相手の生年月日(日)
   partnerSex              : "" ,  // 相手の性別
+  partnerAge              : "" ,  // 相手の年齢
   partnerRekiNum          : "" ,  // 相手の宿陽暦番号
   partnerRekiName         : "" ,  // 相手の宿名
   partnerRekiYomi         : "" ,  // 相手の宿名(読み方)

@@ -132,7 +132,9 @@ function 相性診断結果表示() {
     }
     // 年齢の値をセットする
     setAge(getAge)
+    store.getState().userAge = getAge
     setPartnerAge(partnerGetAge)
+    store.getState().partnerAge = partnerGetAge
   }
 
   // 相性診断を実行
@@ -423,16 +425,7 @@ function 相性診断結果表示() {
 
   // PDFに出力する
   const printDocument = () => {
-    const input = document.getElementById("test");
-    html2canvas(input).then((canvas) => {
-      const imgData = canvas.toDataURL("image/png");
-
-      const pdf = new jsPDF()
-      pdf.addImage(imgData, "SVG", 10, 10 , canvas.width/7 , canvas.height/7)
-      let FileName = String(nowYear) + String(nowMonth) + String(nowDay) + "_" + String(name)  + "様_相性診断結果.pdf"
-      console.log(FileName)
-      pdf.save(FileName)
-    });
+    history.push("/aisyouprint")
   };
 
   // 相性診断画面に戻るボタンクリック時の処理

@@ -128,7 +128,7 @@ function 個人鑑定編集(data) {
               variant = "contained"
               xs      = "12"
               onClick = {fetchKojinKanteiData}
-              >編集した情報で再取得する</BootstrapButton>
+              >編集した情報で再表示する</BootstrapButton>
           </Grid>
 
           {/* データ表示領域 */}
