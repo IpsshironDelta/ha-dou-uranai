@@ -29,8 +29,8 @@ import {SYUKUYOU_AISYOU ,
 ////////////////////////////////////////////
 // 定数
 ////////////////////////////////////////////
-const MineFlg               = "1"
-const PartnerFlg            = "2"
+const MineFlg    = "1"
+const PartnerFlg = "2"
 
 function 相性診断() {
   // ------------------入力系変数------------------
@@ -47,7 +47,7 @@ function 相性診断() {
   const [partnermonth , setPartnerMonth] = useState("") // 相手の月を選択
   const [partnerday   , setPartnerDay]   = useState("") // 相手の日を選択
   const [partnerradio , setPartnerRadio] = useState("") // 相手のラジオボタン
-  const [partnerage   , setPartnerAge]   = useState("")                            // 相手の年齢
+  const [partnerage   , setPartnerAge]   = useState("") // 相手の年齢
   const [partneryado  , setPartnerYado]  = useState("") // 相手の宿名
   const [partneryomi  , setPartnerYomi]  = useState("") // 相手の宿名(読み)
   const [kankei       , setKankei]       = useState("") // 1.お二人の関係
@@ -448,15 +448,15 @@ function 相性診断() {
         <Header/>
         <Grid container spacing={2}>
           <Grid item xs={12} align="center">
-            <Typography variant="h4">相性診断入力</Typography >
+            <Typography variant="h4">相性診断</Typography >
           </Grid>
           <Grid item xs={12} align="center">
-            <Typography variant="h5">自分の生年月日の入力</Typography >
+            <Typography variant="h5">自分の生年月日</Typography >
           </Grid>
 
           {/* 名まえ入力欄 */}
           <Grid item xs={7} align="right">
-            <Typography variant="h6">鑑定書に表示する自分側の名前</Typography >
+            <Typography variant="h6">自分の名前</Typography >
           </Grid>
           <Grid item xs={5} align="left">
             <TextField
@@ -516,12 +516,12 @@ function 相性診断() {
 
         <Grid container spacing={2}>
           <Grid item xs={12} align="center">
-            <Typography variant="h5">相手の生年月日の入力</Typography >
+            <Typography variant="h5">相手の生年月日</Typography >
           </Grid>
 
           {/* 名まえ入力欄 */}
           <Grid item xs={7} align="right">
-            <Typography variant="h6">鑑定書に表示する相手側の名前</Typography >
+            <Typography variant="h6">相手の名前</Typography >
           </Grid>
           <Grid item xs={5} align="left">
             <TextField

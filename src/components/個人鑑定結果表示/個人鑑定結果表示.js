@@ -264,7 +264,7 @@ function 個人鑑定結果表示() {
                   <Typography 
                     sx = {{
                       fontSize      : 20,
-                    }}>本命宿：</Typography>
+                    }}>宿：</Typography>
                 </Grid>
                 <Grid item xs={9} align = "left">
                   <Typography 

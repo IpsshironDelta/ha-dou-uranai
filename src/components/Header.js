@@ -39,11 +39,11 @@ export default function ButtonAppBar() {
             sx={{ flexGrow: 1 ,color:"#ffffff"}}>
             波動占いの学校
           </Typography>
-          <Button 
-            color="inherit"
-            onClick  = {() => {
-              handleLogout()
-              history.push("/login")}}>ログアウト</Button>
+            <Button 
+              color="inherit"
+              onClick  = {() => {
+                handleLogout()
+                history.push("/login")}}>ログアウト</Button>
         </Toolbar>
       </AppBar>
     </Box>

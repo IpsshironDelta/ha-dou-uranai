@@ -109,7 +109,7 @@ function 個人鑑定() {
         <Header/>
         <Grid container spacing={2}>
           <Grid item xs={12} align="center">
-            <Typography variant="h4">個人鑑定入力</Typography >
+            <Typography variant="h4">個人鑑定</Typography >
           </Grid>
           <Grid item xs={12} align="center">
             <Typography variant="h5">生年月日の入力</Typography >
@@ -117,7 +117,7 @@ function 個人鑑定() {
 
           {/* 名まえ入力欄 */}
           <Grid item xs={7} align="right">
-            <Typography variant="h6">個人鑑定書に表示するお名前</Typography >
+            <Typography variant="h6">名前</Typography >
           </Grid>
           <Grid item xs={5} align="left">
             <TextField

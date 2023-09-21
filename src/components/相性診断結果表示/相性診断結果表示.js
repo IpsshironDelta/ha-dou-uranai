@@ -84,7 +84,7 @@ function 相性診断結果表示() {
   const [month , setMonth] = useState(store.getState().userMonth) // 月を選択
   const [day   , setDay]   = useState(store.getState().userDay)   // 日を選択
   const [radio , setRadio] = useState(store.getState().userSex)   // ラジオボタン
-  const [age   , setAge]   = useState("")                         // 年齢
+  const [age   , setAge]   = useState(store.getState().userAge)   // 年齢
   const [yado  , setYado]  = useState(store.getState().syukuYouRekiName) // 宿名
   const [yomi  , setYomi]  = useState(store.getState().syukuYouRekiYomi) // 宿名(読み)
   const [partnername  , setPartnerName]  = useState(store.getState().partnerName)  // 相手の個人鑑定名前
@@ -92,15 +92,15 @@ function 相性診断結果表示() {
   const [partnermonth , setPartnerMonth] = useState(store.getState().partnerMonth) // 相手の月を選択
   const [partnerday   , setPartnerDay]   = useState(store.getState().partnerDay)   // 相手の日を選択
   const [partnerradio , setPartnerRadio] = useState(store.getState().partnerSex)   // 相手のラジオボタン
-  const [partnerage   , setPartnerAge]   = useState("")                            // 相手の年齢
+  const [partnerage   , setPartnerAge]   = useState(store.getState().partnerAge)   // 相手の年齢
   const [partneryado  , setPartnerYado]  = useState(store.getState().partnerRekiName) // 相手の宿名
   const [partneryomi  , setPartnerYomi]  = useState(store.getState().partnerRekiYomi) // 相手の宿名(読み)
-  const [kankei       , setKankei]       = useState("")    // 1.お二人の関係
-  const [kihon        , setKihon]        = useState("")     // 2.基本的な相性
-  const [renai        , setRenai]        = useState("")     // 3.恋愛関係の相性
-  const [sigoto       , setSigoto]       = useState("")   // 4.仕事関係の相性
-  const [userpartner  , setUserPartner]  = useState("")      // 5.自分側から見た相手との関係
-  const [partneruser  , setPartnerUser]  = useState("")      // 6.相手側から見た自分との関係
+  const [kankei       , setKankei]       = useState("")  // 1.お二人の関係
+  const [kihon        , setKihon]        = useState("")  // 2.基本的な相性
+  const [renai        , setRenai]        = useState("")  // 3.恋愛関係の相性
+  const [sigoto       , setSigoto]       = useState("")  // 4.仕事関係の相性
+  const [userpartner  , setUserPartner]  = useState("")  // 5.自分側から見た相手との関係
+  const [partneruser  , setPartnerUser]  = useState("")  // 6.相手側から見た自分との関係
 
   const history = useHistory()
 
