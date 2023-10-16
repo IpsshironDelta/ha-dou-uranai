@@ -35,17 +35,16 @@ function 個人鑑定() {
 
   // ------------------入力系変数------------------
   const [name  , setName]  = useState("") // 個人鑑定名前
-  const [year  , setYear]  = useState("")  // 年を選択
-  const [month , setMonth] = useState("")   // 月を選択
-  const [day   , setDay]   = useState("")   // 日を選択
-  const [radio , setRadio] = useState("")   // ラジオボタン
+  const [year  , setYear]  = useState("") // 年を選択
+  const [month , setMonth] = useState("") // 月を選択
+  const [day   , setDay]   = useState("") // 日を選択
+  const [radio , setRadio] = useState("") // ラジオボタン
   const history = useHistory()
 
   // ------------------メッセージ用------------------
   const [error, setError]                = useState(false) // エラー判定
   const [errormessage , setErrorMessage] = useState("")    // エラーメッセージ
   const [success, setSuccess]            = useState(false) 
-
 
   // 編集ボタンクリック時の処理
   const handleClickEdit = (event) =>{

@@ -1,0 +1,1 @@
+https://lyla.tokyo/import_data_to_firestore/

@@ -12,7 +12,7 @@ import MainPageButton from "./MainPageButton"
 import Header         from "../Header"
 import { styled }     from '@mui/material/styles'
 import store          from '../../store'
-import {firebaseApp }    from "../../firebase"
+import {firebaseApp } from "../../firebase"
 
 /////////////////////////////////////////
 // スタイル
