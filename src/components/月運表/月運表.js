@@ -35,6 +35,7 @@ import { firebaseApp }      from "../../firebase"
 //　定数
 ////////////////////////////////////////////
 const GetsuUnnHyouData = "MonthUnHyouData"
+const AuthEmailAddress = "skr20050105@gmail.com"
 
 ////////////////////////////////////////////
 // スタイル
@@ -100,6 +101,18 @@ function 月運表() {
   const history = useHistory()
   const MonthDataAry    = []
   const FirebaseDataAry = []
+
+  // ログインユーザーの情報を取得
+  firebaseApp.fireauth.onAuthStateChanged(user => {
+    if (!user) {
+      // 何もしない
+    }else{
+      store.getState().loginUserUID = user.uid
+      store.getState().loginUserEmail = user.email
+      console.log("user.uid => " , user.uid)
+      console.log("user.email => " , user.email)
+    }
+  })
 
   // firebaseから月運表データを取得
   const fetchGetsuUnnData = () => {
@@ -356,6 +369,10 @@ function 月運表() {
               xs      = "12"
               link    = "/"/>
           </Grid>
+
+          {/* 月運表の内容を編集するボタン */}
+          {/* AuthEmailAddressと一致している場合のみに表示する */}
+          {store.getState().loginUserEmail && store.getState().loginUserEmail == AuthEmailAddress ?
           <Grid item xs={4} align="center">
             <MonthDataButton
               id      = "monthdataedit"
@@ -363,7 +380,9 @@ function 月運表() {
               variant = "contained"
               xs      = "12"
               link    = "/monthchart/edit"/>
-          </Grid>
+          </Grid> : 
+          <Grid item xs={4} align="center">
+          </Grid>}
         </Grid>
         <br/>
       </Box>

@@ -76,10 +76,10 @@ function MainPage() {
     console.log("FUGA")
     if (!user) {
       history.push("/login")
-      console.log("TEST")
     }else{
       store.getState().loginUserUID = user.uid
-      console.log("TEST" , user.uid)
+      console.log("user.uid   =>" , user.uid)
+      console.log("user.email =>", user.email)
     }
   })
 

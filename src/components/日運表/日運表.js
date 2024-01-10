@@ -36,8 +36,9 @@ import { firebaseApp }    from "../../firebase"
 ////////////////////////////////////////////
 // 定数
 ////////////////////////////////////////////
-const weekday        = ["日","月","火","水","木","金","土"]
-const DayUnnHyouData = "DayUnHyouData"
+const weekday          = ["日","月","火","水","木","金","土"]
+const DayUnnHyouData   = "DayUnHyouData"
+const AuthEmailAddress = "skr20050105@gmail.com"
 
 ////////////////////////////////////////////
 // スタイル
@@ -106,6 +107,18 @@ function 日運表() {
   var DayDataAry       = []
   var FirebaseDataAry  = []
   const history        = useHistory()
+
+  // ログインユーザーの情報を取得
+  firebaseApp.fireauth.onAuthStateChanged(user => {
+    if (!user) {
+      // 何もしない
+    }else{
+      store.getState().loginUserUID = user.uid
+      store.getState().loginUserEmail = user.email
+      console.log("user.uid => " , user.uid)
+      console.log("user.email => " , user.email)
+    }
+  })
 
   // firebaseから月運表データを取得
   const fetchNichiUnnData = () => {
@@ -460,6 +473,10 @@ function 日運表() {
               link    = "/"
               onClick = {(e) => handleClickHome(e.target.link)}/>
           </Grid>
+
+          {/* 日運表の内容を編集するボタン */}
+          {/* AuthEmailAddressと一致している場合のみに表示する */}
+          {store.getState().loginUserEmail && store.getState().loginUserEmail == AuthEmailAddress ?
           <Grid item xs={4} align="center">
             <DayDataButton
               id      = "daydataedit"
@@ -468,7 +485,9 @@ function 日運表() {
               xs      = "12"
               link    = "/daychart/edit"
               onClick = {(e) => handleClickUpDate(e.target.link)}/>
-          </Grid>
+          </Grid> : 
+          <Grid item xs={4} align="center">
+          </Grid>}
         </Grid>
         <br/>
       </Box>

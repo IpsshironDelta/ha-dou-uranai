@@ -33,7 +33,8 @@ import { firebaseApp }    from "../../firebase"
 ////////////////////////////////////////////
 //　定数
 ////////////////////////////////////////////
-const NennUnnHyouData = "YearUnHyouData"
+const NennUnnHyouData  = "YearUnHyouData"
+const AuthEmailAddress = "skr20050105@gmail.com"
 
 ////////////////////////////////////////////
 // スタイル
@@ -120,6 +121,18 @@ function 年運表() {
       setFetchData([...FirebaseDataAry])
     })
   }
+
+  // ログインユーザーの情報を取得
+  firebaseApp.fireauth.onAuthStateChanged(user => {
+    if (!user) {
+      // 何もしない
+    }else{
+      store.getState().loginUserUID = user.uid
+      store.getState().loginUserEmail = user.email
+      console.log("user.uid => " , user.uid)
+      console.log("user.email => " , user.email)
+    }
+  })
 
   // 初回起動時の処理
   useEffect(() => {
@@ -349,6 +362,9 @@ function 年運表() {
               xs      = "12"
               link    = "/"/>
           </Grid>
+          {/* 年運表の内容を編集するボタン */}
+          {/* AuthEmailAddressと一致している場合のみに表示する */}
+          {store.getState().loginUserEmail && store.getState().loginUserEmail == AuthEmailAddress ?
           <Grid item xs={4} align="center">
             <YearDataButton
               id      = "yeardataedit"
@@ -356,7 +372,9 @@ function 年運表() {
               variant = "contained"
               xs      = "12"
               link    = "/yearchart/edit"/>
-          </Grid>
+          </Grid> : 
+          <Grid item xs={4} align="center">
+          </Grid>}
         </Grid>
         <br/>
       </Box>

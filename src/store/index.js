@@ -3,6 +3,8 @@ import {UPDATE_FORM,
         UPDATE_RECIPE,} from '../actions/memberAction';
 
 const initialState = {
+//  loginUserEmail          : "" ,  // ログインユーザーのメールアドレス
+//  loginUserUID            : "" ,  // ログインユーザーのUID
   userName                : "" ,  // 鑑定者名称
   userYear                : "" ,  // 生年月日(年)
   userMonth               : "" ,  // 生年月日(月)

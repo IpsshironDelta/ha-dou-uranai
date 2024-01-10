@@ -8,19 +8,21 @@ import { Alert ,
         Container ,
         TextField , 
         Button, }      from "@mui/material"
-import { useHistory }  from "react-router-dom";
+import { useHistory }  from "react-router-dom"
 import Header          from "../Header"
 import YearSlect       from "./YearSelect"
 import MonthSlect      from "./MonthSelect"
 import DaySlect        from "./DaySelect"
 import RadioGroup      from './RadioGroup'
 import KojinButton     from "./KojinButton"
-import store           from '../../store';
+import store           from '../../store'
+import {firebaseApp}   from "../../firebase"
 
 ////////////////////////////////////////////
 // ------------------定数------------------
 ////////////////////////////////////////////
 const Kojinkantei_Data = "Kojinkantei_Data"
+const AuthEmailAddress = "skr20050105@gmail.com"
 
 function 個人鑑定() {
 
@@ -36,6 +38,18 @@ function 個人鑑定() {
   const [error, setError]                = useState(false) // エラー判定
   const [errormessage , setErrorMessage] = useState("")    // エラーメッセージ
   const [success, setSuccess]            = useState(false) 
+
+  // ログインユーザーの情報を取得
+  firebaseApp.fireauth.onAuthStateChanged(user => {
+    if (!user) {
+      // 何もしない
+    }else{
+      store.getState().loginUserUID = user.uid
+      store.getState().loginUserEmail = user.email
+      console.log("user.uid => " , user.uid)
+      console.log("user.email => " , user.email)
+    }
+  })
 
   // 編集ボタンクリック時の処理
   const handleClickEdit = (event) =>{
@@ -180,6 +194,8 @@ function 個人鑑定() {
               onClick ={handleClick}/>
           </Grid>
           {/* 鑑定内容を編集するボタン */}
+          {/* AuthEmailAddressと一致している場合のみに表示する */}
+          {store.getState().loginUserEmail && store.getState().loginUserEmail == AuthEmailAddress ?
           <Grid item xs={4} align="center">
             <KojinButton
               id      = "kojinedit"
@@ -189,7 +205,9 @@ function 個人鑑定() {
               link    = "/kojin/edit"
               onClick ={handleClickEdit}
               />
-          </Grid>
+          </Grid> : 
+          <Grid item xs={4} align="center">
+          </Grid>}
           {/* 戻るボタン */}
           <Grid item xs={4} align="left">
           <KojinButton

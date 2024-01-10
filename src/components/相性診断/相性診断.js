@@ -24,13 +24,15 @@ import {SYUKUYOU_AISYOU ,
        AISYOUKANTEI , 
        AISYOU_KANTEI_KYORI ,
        TAIOUHYOU ,
-       SYUKUYOUREKI} from "../ObjectData"
+       SYUKUYOUREKI}        from "../ObjectData"
+import {firebaseApp}        from "../../firebase"
 
 ////////////////////////////////////////////
 // 定数
 ////////////////////////////////////////////
-const MineFlg    = "1"
-const PartnerFlg = "2"
+const MineFlg          = "1"
+const PartnerFlg       = "2"
+const AuthEmailAddress = "skr20050105@gmail.com"
 
 function 相性診断() {
   // ------------------入力系変数------------------
@@ -64,6 +66,18 @@ function 相性診断() {
   const [success, setSuccess] = useState(false)         // 成功判定
 
   const history = useHistory()
+
+  // ログインユーザーの情報を取得
+  firebaseApp.fireauth.onAuthStateChanged(user => {
+    if (!user) {
+      // 何もしない
+    }else{
+      store.getState().loginUserUID = user.uid
+      store.getState().loginUserEmail = user.email
+      console.log("user.uid => " , user.uid)
+      console.log("user.email => " , user.email)
+    }
+  })
 
   // 相性診断を実行
   const Diagnosis = () => {
@@ -592,6 +606,8 @@ function 相性診断() {
               onClick ={handleClick}/>
           </Grid>
           {/* 相性鑑定データ編集ボタン */}
+          {/* AuthEmailAddressと一致している場合のみに表示する */}
+          {store.getState().loginUserEmail && store.getState().loginUserEmail == AuthEmailAddress ?
           <Grid item xs={4} align="center">
             <AisyouButton
                 id      = "kanteihensyuu"
@@ -600,7 +616,9 @@ function 相性診断() {
                 xs      = "12"
                 link    = "/aisyou/edit"
                 onClick ={handleClickEdit}/>
-          </Grid>
+          </Grid>:
+          <Grid item xs={4} align="center">
+          </Grid>}
           {/* 戻るボタン */}
           <Grid item xs={4} align="left">
             <AisyouButton
