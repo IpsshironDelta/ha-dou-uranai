@@ -16,15 +16,6 @@ import DaySlect        from "./DaySelect"
 import RadioGroup      from './RadioGroup'
 import KojinButton     from "./KojinButton"
 import store           from '../../store';
-import {SYUKUYOUREKI , 
-       KOJIN_KANTEI ,
-       TAIOUHYOU}      from "../ObjectData"
-import {addDoc,
-       collection,
-       doc,
-       updateDoc, 
-       getDocs,}       from "firebase/firestore"
-import {firebaseApp }  from "../../firebase"
 
 ////////////////////////////////////////////
 // ------------------定数------------------
