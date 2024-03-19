@@ -152,7 +152,7 @@ function MainPage() {
                   variant = "contained"
                   xs      = "12"
                   link    = "/"
-                  onClick={MeishikiClear}>命名クリア</BootstrapButton>
+                  onClick={MeishikiClear}>命名クリア</BootstrapButton>              
             </Grid>
         </Grid>
         <br/>

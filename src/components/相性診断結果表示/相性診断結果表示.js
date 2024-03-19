@@ -10,10 +10,7 @@ import Typography         from '@mui/material/Typography'
 import TextField          from '@mui/material/TextField'
 import { useHistory }     from "react-router-dom";
 import Header             from "../Header"
-import AisyouResultButton from "./AisyouResultButton"
 import store              from '../../store'
-import jsPDF              from "jspdf";
-import html2canvas        from "html2canvas";
 import {SYUKUYOU_AISYOU , 
        AISYOUKANTEI , 
        AISYOU_KANTEI_KYORI ,
@@ -24,7 +21,9 @@ import {addDoc,
         doc,
         updateDoc, 
         getDocs,}         from "firebase/firestore"
- import {firebaseApp }    from "../../firebase"
+import {firebaseApp }     from "../../firebase"
+import Backdrop           from '@mui/material/Backdrop'
+import CircularProgress   from '@mui/material/CircularProgress'
 
 ////////////////////////////////////////////
 // スタイル
@@ -103,6 +102,15 @@ function 相性診断結果表示() {
   const [partneruser  , setPartnerUser]  = useState("")  // 6.相手側から見た自分との関係
 
   const history = useHistory()
+
+  // ------------------バックドロップ------------------
+  const [open, setOpen] = useState(true)
+  // 診断をやめるボタンクリック時の処理
+  const handleClose = (reason) => {
+    if ( reason === 'backdropClick') return
+    setOpen(false)
+    history.push("/kojin")
+  }
 
   useEffect(() => {
     // 年齢を取得する
@@ -241,6 +249,11 @@ function 相性診断結果表示() {
     getDocs(collection(firestore, AisyouKanteiDataKyori)).then((querySnapshot)=>{
       querySnapshot.forEach((document) => {
         if(document.data().Num == RelationshipNum){
+          console.log("このタイミングで取得できた！")
+
+          // バックドロップを閉じる
+          setOpen(false)
+
           console.log(document.data().Num , "で番号が一致しているため相性の距離情報を代入")
           const aisyoukyoriRef = doc(firestore , AisyouKanteiDataKyori , document.id)
 
@@ -439,6 +452,40 @@ function 相性診断結果表示() {
         <Box sx={{ flexGrow: 1,
                    bgcolor: '#fce9ed' }}>
         <Header/>
+
+        {/* バックドロップ表示範囲 */}
+        <Backdrop
+            sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+            open={open}
+            onClose={handleClose}>
+            <Grid container spacing={2}>
+            <Grid item xs={12} align="center">
+                <CircularProgress color="secondary" />
+            </Grid>
+            <Grid item xs={12} align="center">
+                <Typography sx={{ mt: 2 }}>
+                診断結果を取得しております。
+                </Typography>
+            </Grid>
+            <Grid item xs={12} align="center">
+                <Typography sx={{ mt: 2 }}>
+                しばらくお待ちください。
+                </Typography>
+            </Grid>
+            <Grid item xs={12} align="center">
+              <BootstrapButton
+                disableRipple
+                id      = "aisyouback"
+                text    = "相性診断画面へ戻る"
+                variant = "contained"
+                xs      = "12"
+                link    = "/aisyou"
+                onClick = {handleClose}>診断をとめる</BootstrapButton>
+                {/* <Button variant="contained" onClick={handleClose}>診断をとめる</Button> */}
+            </Grid>
+            </Grid>
+        </Backdrop>
+
         <Grid container spacing={2}>
           {/* 画面タイトル表示領域 */}
           <Grid item xs={12} align="center">

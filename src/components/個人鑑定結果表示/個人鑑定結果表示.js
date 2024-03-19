@@ -1,27 +1,27 @@
 import React, 
      { useState , 
-       useEffect}         from 'react'
-import Grid               from '@mui/material/Grid'
-import { styled }         from '@mui/material/styles';
-import Box                from '@mui/material/Box'
-import Container          from '@mui/material/Container'
-import Typography         from '@mui/material/Typography'
-import TextField          from '@mui/material/TextField';
-import { useHistory }     from "react-router-dom";
-import Header             from "../Header"
-import store              from '../../store'
-import { Button }         from '@mui/material'
-import jsPDF              from "jspdf";
-import html2canvas        from "html2canvas";
+       useEffect}       from 'react'
+import Grid             from '@mui/material/Grid'
+import { styled }       from '@mui/material/styles';
+import Box              from '@mui/material/Box'
+import Container        from '@mui/material/Container'
+import Typography       from '@mui/material/Typography'
+import TextField        from '@mui/material/TextField';
+import { useHistory }   from "react-router-dom";
+import Header           from "../Header"
+import store            from '../../store'
+import { Button }       from '@mui/material'
+import jsPDF            from "jspdf";
+import html2canvas      from "html2canvas";
 import {SYUKUYOUREKI , 
        KOJIN_KANTEI ,
-       TAIOUHYOU}         from "../ObjectData"
-import {addDoc,
-       collection,
+       TAIOUHYOU}       from "../ObjectData"
+import {collection,
        doc,
-       updateDoc, 
-       getDocs,}          from "firebase/firestore"
-import {firebaseApp }     from "../../firebase"
+       getDocs,}        from "firebase/firestore"
+import {firebaseApp }   from "../../firebase"
+import Backdrop         from '@mui/material/Backdrop'
+import CircularProgress from '@mui/material/CircularProgress'
 
 ////////////////////////////////////////////
 // スタイル
@@ -93,6 +93,15 @@ function 個人鑑定結果表示() {
   const [yomi    , setYomi]    = useState(store.getState().syukuYouRekiYomi) // 宿名(読み)
   const [age     , setAge]     = useState("")                                // 年齢
 
+  // ------------------バックドロップ------------------
+  const [open, setOpen] = useState(true)
+  // 診断をやめるボタンクリック時の処理
+  const handleClose = (reason) => {
+    if ( reason === 'backdropClick') return
+    setOpen(false)
+    history.push("/kojin")
+  }
+
   const history = useHistory()
 
   useEffect(() => {
@@ -112,12 +121,18 @@ function 個人鑑定結果表示() {
     const getYadoName = (event) => {
       console.log(event)
       var BuffTaiou = TAIOUHYOU.filter(item => item.num == event)
-      console.log("★" , BuffTaiou[0].name,BuffTaiou[0].num)
+      console.log("★あああ" , BuffTaiou[0].name,BuffTaiou[0].num)
   
       const firestore = firebaseApp.firestore
       getDocs(collection(firestore, Kojinkantei_Data)).then((querySnapshot)=>{
         querySnapshot.forEach((document) => {
           if(document.data().num == BuffTaiou[0].num){
+
+            console.log("このタイミングで取得できた！")
+
+            // バックドロップを閉じる
+            setOpen(false)
+
             console.log(document.data().num , "で番号が一致しているため宿曜暦情報を代入")
             const kojinkanteiRef = doc(firestore , Kojinkantei_Data , document.id)
   
@@ -201,6 +216,40 @@ function 個人鑑定結果表示() {
         <Box sx={{ flexGrow: 1,
                    bgcolor: '#fce9ed' }}>
         <Header/>
+
+        {/* バックドロップ表示範囲 */}
+        <Backdrop
+            sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+            open={open}
+            onClose={handleClose}>
+            <Grid container spacing={2}>
+            <Grid item xs={12} align="center">
+                <CircularProgress color="secondary" />
+            </Grid>
+            <Grid item xs={12} align="center">
+                <Typography sx={{ mt: 2 }}>
+                診断結果を取得しております。
+                </Typography>
+            </Grid>
+            <Grid item xs={12} align="center">
+                <Typography sx={{ mt: 2 }}>
+                しばらくお待ちください。
+                </Typography>
+            </Grid>
+            <Grid item xs={12} align="center">
+              <BootstrapButton
+                disableRipple
+                id      = "kojinback"
+                text    = "個人鑑定画面へ戻る"
+                variant = "contained"
+                xs      = "12"
+                link    = "/kojin"
+                onClick = {handleClose}>診断をとめる</BootstrapButton>
+                {/* <Button variant="contained" onClick={handleClose}>診断をとめる</Button> */}
+            </Grid>
+            </Grid>
+        </Backdrop>
+
         <Grid container spacing={2}>
           {/* タイトル表示領域 */}
           <Grid item xs={12} align="center">
