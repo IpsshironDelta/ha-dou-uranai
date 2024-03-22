@@ -37,17 +37,17 @@ const AuthEmailAddress = "skr20050105@gmail.com"
 function 相性診断() {
   // ------------------入力系変数------------------
   const [name  , setName]  = useState("") // 個人鑑定名前
-  const [year  , setYear]  = useState("") // 年を選択
-  const [month , setMonth] = useState("") // 月を選択
-  const [day   , setDay]   = useState("") // 日を選択
+  const [year  , setYear]  = useState(1980) // 年を選択
+  const [month , setMonth] = useState(6) // 月を選択
+  const [day   , setDay]   = useState(15) // 日を選択
   const [radio , setRadio] = useState("") // ラジオボタン
   const [age   , setAge]   = useState("") // 年齢
   const [yado  , setYado]  = useState("") // 宿名
   const [yomi  , setYomi]  = useState("") // 宿名(読み)
   const [partnername  , setPartnerName]  = useState("") // 相手の個人鑑定名前
-  const [partneryear  , setPartnerYear]  = useState("") // 相手の年を選択
-  const [partnermonth , setPartnerMonth] = useState("") // 相手の月を選択
-  const [partnerday   , setPartnerDay]   = useState("") // 相手の日を選択
+  const [partneryear  , setPartnerYear]  = useState(1980) // 相手の年を選択
+  const [partnermonth , setPartnerMonth] = useState(6) // 相手の月を選択
+  const [partnerday   , setPartnerDay]   = useState(15) // 相手の日を選択
   const [partnerradio , setPartnerRadio] = useState("") // 相手のラジオボタン
   const [partnerage   , setPartnerAge]   = useState("") // 相手の年齢
   const [partneryado  , setPartnerYado]  = useState("") // 相手の宿名

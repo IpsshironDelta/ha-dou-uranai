@@ -79,12 +79,19 @@ function PDF出力画面() {
 
   // PDFに出力する
   const printDocument = () => {
-    const input = document.getElementById("test");
+    const input = document.getElementById("test")
+    // 画面のサイズを取得
+    const width = input.offsetWidth
+    const height = input.offsetHeight
+    console.log("width : " , width)
+    console.log("height : " , height)
+
     html2canvas(input).then((canvas) => {
       const imgData = canvas.toDataURL("image/png");
 
-      const pdf = new jsPDF()
-      pdf.addImage(imgData, "SVG", -30, 5 , canvas.width/7 , canvas.height/7)
+      const pdf = new jsPDF('p', 'px', [width, height])
+      // pdf.addImage(imgData, "SVG", -30, 5 , canvas.width/7 , canvas.height/7)
+      pdf.addImage(imgData, 'PNG', 0, 0, width, height)
       let FileName = String(nowYear) + String(nowMonth) + String(nowDay) + "_" + String(store.getState().userName)  + "様相性診断診断結果.pdf"
       console.log(FileName)
       pdf.save(FileName)
@@ -93,7 +100,7 @@ function PDF出力画面() {
 
   return (
     <div className='test' id='test'>
-      <Container maxWidth="lg">
+      <Container maxWidth="sm">
         <Box sx={{ flexGrow: 1,
                    bgcolor: '#fce9ed' }}>
         <Grid container spacing={2}>
@@ -127,19 +134,19 @@ function PDF出力画面() {
                     fontSize      : 16,
                   }}>{store.getState().userName} 様</Typography>
               </Grid>
-              <Grid item xs={4} align = "right">
+              <Grid item xs={7} align = "right">
                 <Typography 
                   sx = {{
                     fontSize      : 16,
                   }}>西暦{store.getState().userYear}年{store.getState().userMonth}月{store.getState().userDay}日　生まれ</Typography>
               </Grid>
-              <Grid item xs={1} align = "right">
+              <Grid item xs={9} align = "right">
                 <Typography 
                   sx = {{
                     fontSize      : 16,
                   }}>{store.getState().userAge} 歳</Typography>
               </Grid>
-              <Grid item xs={1} align = "right">
+              <Grid item xs={2} align = "right">
                 <Typography 
                   sx = {{
                     fontSize      : 16,
@@ -158,19 +165,19 @@ function PDF出力画面() {
                     fontSize      : 16,
                   }}>{store.getState().partnerName} 様</Typography>
               </Grid>
-              <Grid item xs={4} align = "right">
+              <Grid item xs={7} align = "right">
                 <Typography 
                   sx = {{
                     fontSize      : 16,
                   }}>西暦{store.getState().partnerYear}年{store.getState().partnerMonth}月{store.getState().partnerDay}日　生まれ</Typography>
               </Grid>
-              <Grid item xs={1} align = "right">
+              <Grid item xs={9} align = "right">
                 <Typography 
                   sx = {{
                     fontSize      : 16,
                   }}>{store.getState().partnerAge} 歳</Typography>
               </Grid>
-              <Grid item xs={1} align = "right">
+              <Grid item xs={2} align = "right">
                 <Typography 
                   sx = {{
                     fontSize      : 16,
@@ -208,26 +215,26 @@ function PDF出力画面() {
                     }}>相手側のホロスコープ</Typography>
                 </Grid>
 
-                <Grid item xs={3} align = "right">
+                <Grid item xs={6} align = "right">
                   <Typography 
                     sx = {{
                       fontSize      : 20,
                     }}>自分側の本命宿：</Typography>
                 </Grid>
-                <Grid item xs={3} align = "left">
-                  <Typography 
-                    sx = {{
-                      fontSize      : 20,
-                    }}>{store.getState().syukuYouRekiName}（{store.getState().syukuYouRekiYomi}）</Typography>
-                </Grid>
-
-                <Grid item xs={3} align = "right">
+                <Grid item xs={6} align = "right">
                   <Typography 
                     sx = {{
                       fontSize      : 20,
                     }}>相手側の本命宿：</Typography>
                 </Grid>
-                <Grid item xs={3} align = "left">
+
+                <Grid item xs={6} align = "left">
+                  <Typography 
+                    sx = {{
+                      fontSize      : 20,
+                    }}>{store.getState().syukuYouRekiName}（{store.getState().syukuYouRekiYomi}）</Typography>
+                </Grid>
+                <Grid item xs={6} align = "left">
                   <Typography 
                     sx = {{
                       fontSize      : 20,
@@ -270,14 +277,14 @@ function PDF出力画面() {
           <Grid item xs={1} align="center"></Grid>
             <Grid item xs={10} align="center">
               <Grid container spacing={1}>
-                <Grid item xs={6} align = "left">
+                <Grid item xs={12} align = "left">
                   <Typography 
                     sx = {{
                       fontSize      : 20,
                     }}>1.おふたりの関係</Typography>
                     {store.getState().partnerKankei}
                 </Grid>
-                <Grid item xs={6} align = "left">
+                <Grid item xs={12} align = "left">
                   <Typography 
                     sx = {{
                       fontSize      : 20,
@@ -291,14 +298,14 @@ function PDF出力画面() {
           <Grid item xs={1} align="center"></Grid>
             <Grid item xs={10} align="center">
               <Grid container spacing={1}>
-                <Grid item xs={6} align = "left">
+                <Grid item xs={12} align = "left">
                   <Typography 
                     sx = {{
                       fontSize      : 20,
                     }}>3.恋愛関係の相性</Typography>
                     {store.getState().partnerRenai}
                 </Grid>
-                <Grid item xs={6} align = "left">
+                <Grid item xs={12} align = "left">
                   <Typography 
                     sx = {{
                       fontSize      : 20,
@@ -312,14 +319,14 @@ function PDF出力画面() {
           <Grid item xs={1} align="center"></Grid>
             <Grid item xs={10} align="center">
               <Grid container spacing={1}>
-                <Grid item xs={6} align = "left">
+                <Grid item xs={12} align = "left">
                   <Typography 
                     sx = {{
                       fontSize      : 20,
                     }}>5.自分側から見た相手との関係</Typography>
                     {store.getState().userPartner}
                 </Grid>
-                <Grid item xs={6} align = "left">
+                <Grid item xs={12} align = "left">
                   <Typography 
                     sx = {{
                       fontSize      : 20,

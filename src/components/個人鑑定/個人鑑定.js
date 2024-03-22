@@ -28,9 +28,9 @@ function 個人鑑定() {
 
   // ------------------入力系変数------------------
   const [name  , setName]  = useState("") // 個人鑑定名前
-  const [year  , setYear]  = useState("") // 年を選択
-  const [month , setMonth] = useState("") // 月を選択
-  const [day   , setDay]   = useState("") // 日を選択
+  const [year  , setYear]  = useState(1980) // 年を選択
+  const [month , setMonth] = useState(6) // 月を選択
+  const [day   , setDay]   = useState(15) // 日を選択
   const [radio , setRadio] = useState("") // ラジオボタン
   const history = useHistory()
 
