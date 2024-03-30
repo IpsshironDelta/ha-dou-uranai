@@ -15,7 +15,8 @@ import jsPDF            from "jspdf";
 import html2canvas      from "html2canvas";
 import {SYUKUYOUREKI , 
        KOJIN_KANTEI ,
-       TAIOUHYOU}       from "../ObjectData"
+       TAIOUHYOU ,
+       CONST_KOJIN_KANTEI} from "../ObjectData"
 import {collection,
        doc,
        getDocs,}        from "firebase/firestore"
@@ -121,65 +122,112 @@ function 個人鑑定結果表示() {
     const getYadoName = (event) => {
       console.log(event)
       var BuffTaiou = TAIOUHYOU.filter(item => item.num == event)
-      console.log("★あああ" , BuffTaiou[0].name,BuffTaiou[0].num)
+      console.log("★" , BuffTaiou[0].name,BuffTaiou[0].num)
+      const GetLocalResult = CONST_KOJIN_KANTEI.filter(test_item => (test_item.num == BuffTaiou[0].num))
+      console.log("GetLocalResult : " , GetLocalResult)
+      // 宿曜暦番号を代入
+      store.getState().syukuYouRekiNum = GetLocalResult[0].num
+      console.log("宿曜暦更新 => " , store.getState().syukuYouRekiNum)
+  
+      // 宿名を代入
+      store.getState().syukuYouRekiName = GetLocalResult[0].yado
+      setYado(GetLocalResult[0].yado)
+      
+      // 読みを代入
+      store.getState().syukuYouRekiYomi = GetLocalResult[0].yomi
+      setYomi(GetLocalResult[0].yomi)
+
+      // 性格を代入
+      store.getState().seikaku = GetLocalResult[0].seikaku
+      setSeikaku(GetLocalResult[0].seikaku)
+      console.log(GetLocalResult[0].seikaku)
+      
+      // 適職を代入
+      store.getState().tekisyoku = GetLocalResult[0].tekisyoku
+      setTekisyoku(GetLocalResult[0].tekisyoku)
+      console.log(GetLocalResult[0].tekisyoku)
+  
+      // お金を代入
+      store.getState().okane = GetLocalResult[0].okane
+      setOkane(GetLocalResult[0].okane)
+      console.log(GetLocalResult[0].okane)
+  
+      // 健康を代入
+      store.getState().kenkou = GetLocalResult[0].kenkou
+      setKenkou(GetLocalResult[0].kenkou)
+      console.log(GetLocalResult[0].kenkou)
+  
+      // 恋愛を代入
+      store.getState().renai = GetLocalResult[0].renai
+      setRenai(GetLocalResult[0].renai)
+      console.log(GetLocalResult[0].renai)
+
+      // 開運を代入
+      store.getState().kaiunn = GetLocalResult[0].kaiunn
+      setKaiunn(GetLocalResult[0].kaiunn)
+      console.log(GetLocalResult[0].kaiunn)
+
+
+      // バックドロップを閉じる
+      setOpen(false)
   
       const firestore = firebaseApp.firestore
-      getDocs(collection(firestore, Kojinkantei_Data)).then((querySnapshot)=>{
-        querySnapshot.forEach((document) => {
-          if(document.data().num == BuffTaiou[0].num){
+      // getDocs(collection(firestore, Kojinkantei_Data)).then((querySnapshot)=>{
+      //   querySnapshot.forEach((document) => {
+      //     if(document.data().num == BuffTaiou[0].num){
 
-            console.log("このタイミングで取得できた！")
+      //       console.log("このタイミングで取得できた！")
 
-            // バックドロップを閉じる
-            setOpen(false)
+      //       // バックドロップを閉じる
+      //       setOpen(false)
 
-            console.log(document.data().num , "で番号が一致しているため宿曜暦情報を代入")
-            const kojinkanteiRef = doc(firestore , Kojinkantei_Data , document.id)
+      //       console.log(document.data().num , "で番号が一致しているため宿曜暦情報を代入")
+      //       const kojinkanteiRef = doc(firestore , Kojinkantei_Data , document.id)
   
-            // 宿曜暦番号を代入
-            store.getState().syukuYouRekiNum = document.data().num
-            console.log("宿曜暦更新 => " , store.getState().syukuYouRekiNum)
+      //       // 宿曜暦番号を代入
+      //       store.getState().syukuYouRekiNum = document.data().num
+      //       console.log("宿曜暦更新 => " , store.getState().syukuYouRekiNum)
         
-            // 宿名を代入
-            store.getState().syukuYouRekiName = document.data().yado
-            setYado(document.data().yado)
+      //       // 宿名を代入
+      //       store.getState().syukuYouRekiName = document.data().yado
+      //       setYado(document.data().yado)
             
-            // 読みを代入
-            store.getState().syukuYouRekiYomi = document.data().yomi
-            setYomi(document.data().yomi)
+      //       // 読みを代入
+      //       store.getState().syukuYouRekiYomi = document.data().yomi
+      //       setYomi(document.data().yomi)
   
-            // 性格を代入
-            store.getState().seikaku = document.data().seikaku
-            setSeikaku(document.data().seikaku)
-            console.log(document.data().seikaku)
+      //       // 性格を代入
+      //       store.getState().seikaku = document.data().seikaku
+      //       setSeikaku(document.data().seikaku)
+      //       console.log(document.data().seikaku)
             
-            // 適職を代入
-            store.getState().tekisyoku = document.data().tekisyoku
-            setTekisyoku(document.data().tekisyoku)
-            console.log(document.data().tekisyoku)
+      //       // 適職を代入
+      //       store.getState().tekisyoku = document.data().tekisyoku
+      //       setTekisyoku(document.data().tekisyoku)
+      //       console.log(document.data().tekisyoku)
         
-            // お金を代入
-            store.getState().okane = document.data().okane
-            setOkane(document.data().okane)
-            console.log(document.data().okane)
+      //       // お金を代入
+      //       store.getState().okane = document.data().okane
+      //       setOkane(document.data().okane)
+      //       console.log(document.data().okane)
         
-            // 健康を代入
-            store.getState().kenkou = document.data().kenkou
-            setKenkou(document.data().kenkou)
-            console.log(document.data().kenkou)
+      //       // 健康を代入
+      //       store.getState().kenkou = document.data().kenkou
+      //       setKenkou(document.data().kenkou)
+      //       console.log(document.data().kenkou)
         
-            // 恋愛を代入
-            store.getState().renai = document.data().renai
-            setRenai(document.data().renai)
-            console.log(document.data().renai)
+      //       // 恋愛を代入
+      //       store.getState().renai = document.data().renai
+      //       setRenai(document.data().renai)
+      //       console.log(document.data().renai)
   
-            // 開運を代入
-            store.getState().kaiunn = document.data().kaiunn
-            setKaiunn(document.data().kaiunn)
-            console.log(document.data().kaiunn)
-          }
-        })
-      })
+      //       // 開運を代入
+      //       store.getState().kaiunn = document.data().kaiunn
+      //       setKaiunn(document.data().kaiunn)
+      //       console.log(document.data().kaiunn)
+      //     }
+      //   })
+      // })
     }
 
   // 年齢を取得

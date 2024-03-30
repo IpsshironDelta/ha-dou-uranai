@@ -23,6 +23,7 @@ import {firebaseApp}   from "../../firebase"
 ////////////////////////////////////////////
 const Kojinkantei_Data = "Kojinkantei_Data"
 const AuthEmailAddress = "skr20050105@gmail.com"
+const AdminAdress      = "ysueda0716@gmail.com"
 
 function 個人鑑定() {
 
@@ -208,6 +209,22 @@ function 個人鑑定() {
           </Grid> : 
           <Grid item xs={4} align="center">
           </Grid>}
+
+          {/* AdminAdress */}
+          {store.getState().loginUserEmail && store.getState().loginUserEmail == AdminAdress ?
+          <Grid item xs={4} align="center">
+            <KojinButton
+              id      = "kojinedit"
+              text    = "個人鑑定内容編集"
+              variant = "contained"
+              xs      = "12"
+              link    = "/kojin/edit"
+              onClick ={handleClickEdit}
+              />
+          </Grid> : 
+          <Grid item xs={4} align="center">
+          </Grid>}
+
           {/* 戻るボタン */}
           <Grid item xs={4} align="left">
           <KojinButton

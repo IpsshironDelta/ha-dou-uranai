@@ -56,7 +56,7 @@ export default function CustomizedButtons(props) {
     <Stack spacing={2} direction="row">
       {/* <ColorButton variant="contained">TEST Button</ColorButton> */}
       <Grid 
-        item xs  = {props.xs}
+        // item xs  = {props.xs}
         align    = {props.align}>
         <BootstrapButton disableRipple
         id       = {props.id}

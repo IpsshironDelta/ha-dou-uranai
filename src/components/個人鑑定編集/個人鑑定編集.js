@@ -92,6 +92,7 @@ function 個人鑑定編集(data) {
 
   // 初回起動時
   useEffect(() => {
+
     fetchKojinKanteiData()
   },[])
 
@@ -105,10 +106,10 @@ function 個人鑑定編集(data) {
         })
       })
     }).then(()=>{
-      console.log("DataAry : " , DataAry)
+      console.log("Get DataAry : " , DataAry)
       setKanteiData([...DataAry])
     })
-    console.log(DataAry);
+    console.log("DataAry =>" , DataAry)
   }
 
   const history = useHistory()
