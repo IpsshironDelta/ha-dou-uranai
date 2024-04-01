@@ -15,7 +15,9 @@ import {SYUKUYOU_AISYOU ,
        AISYOUKANTEI , 
        AISYOU_KANTEI_KYORI ,
        TAIOUHYOU ,
-       SYUKUYOUREKI}      from "../ObjectData"
+       SYUKUYOUREKI,
+       CONST_AISYOU_KANTEI_DATA,
+       CONST_AISYOU_KANTEI_DATA_KYORI,} from "../ObjectData"
 import {addDoc,
         collection,
         doc,
@@ -116,6 +118,7 @@ function 相性診断結果表示() {
     // 年齢を取得する
     getAage()
 
+    // 相性診断を実行
     Diagnosis()
   },[])
 
@@ -149,13 +152,13 @@ function 相性診断結果表示() {
   const Diagnosis = () => {
     // 入力した自分側の年と一致するか判定する
     const BuffYear = SYUKUYOUREKI.filter(item => item.year == year && item.month == month && item.day == day)
-    console.log(BuffYear[0].year , "月", BuffYear[0].month , "月", BuffYear[0].day , "日　：　num =>",BuffYear[0].num)
+    console.log(BuffYear[0].year , "年", BuffYear[0].month , "月", BuffYear[0].day , "日　：　num =>",BuffYear[0].num)
     // 宿陽暦番号を代入
     store.getState().syukuYouRekiNum = BuffYear[0].num
 
     // 入力した相手側の年と一致するか判定する
     const BuffPartnerYear = SYUKUYOUREKI.filter(item => item.year == partneryear & item.month == partnermonth && item.day == partnerday)
-    console.log(BuffPartnerYear[0].year , "月", BuffPartnerYear[0].month , "月", BuffPartnerYear[0].day , "日　：　num =>",BuffPartnerYear[0].num)
+    console.log(BuffPartnerYear[0].year , "年", BuffPartnerYear[0].month , "月", BuffPartnerYear[0].day , "日　：　num =>",BuffPartnerYear[0].num)
     // 宿陽暦番号を代入
     store.getState().partnerRekiNum = BuffPartnerYear[0].num
 
@@ -230,7 +233,7 @@ function 相性診断結果表示() {
     }
 
     // 相性鑑定データを取得
-    console.log(Relationship_6_SyuNum)
+    console.log("Relationship_6_SyuNum:",Relationship_6_SyuNum)
     getAisyouKanteiData(Relationship_6_SyuNum)
 
     // 相性鑑定データの距離を取得(自分相手11種番号)
@@ -246,96 +249,175 @@ function 相性診断結果表示() {
     const BuffKyori = AISYOU_KANTEI_KYORI.filter(item => item.Num == RelationshipNum)
 
     const firestore = firebaseApp.firestore
-    getDocs(collection(firestore, AisyouKanteiDataKyori)).then((querySnapshot)=>{
-      querySnapshot.forEach((document) => {
-        if(document.data().Num == RelationshipNum){
-          console.log("このタイミングで取得できた！")
-
-          // バックドロップを閉じる
-          setOpen(false)
-
-          console.log(document.data().Num , "で番号が一致しているため相性の距離情報を代入")
-          const aisyoukyoriRef = doc(firestore , AisyouKanteiDataKyori , document.id)
-
-          switch(store.getState().strDistance){
-            case "(近距離)":
-              if (inputFlg == 1) {
-                setUserPartner(document.data().kinkyori)
-                store.getState().userPartner = document.data().kinkyori
-                console.log("自分側から見た相手の距離：" , store.getState().strDistance  )
-              }else if (inputFlg == 2){
-                setPartnerUser(document.data().kinkyori)
-                store.getState().partnerUser =document.data().kinkyori
-                console.log("相手側から見た自分の距離：" , store.getState().strDistance  )
-              }
-              break 
-              
-            case "(中距離)":
-              if (inputFlg == 1) {
-                setUserPartner(document.data().tyuukyori)
-                store.getState().userPartner = document.data().tyuukyori
-                console.log("自分側から見た相手の距離：" , store.getState().strDistance  )
-              }else if (inputFlg == 2){
-                setPartnerUser(document.data().tyuukyori)
-                store.getState().partnerUser = document.data().tyuukyori
-                console.log("相手側から見た自分の距離：" , store.getState().strDistance  )
-              } 
-              break
-      
-            case "(遠距離)":
-              if (inputFlg == 1) {
-                setUserPartner(document.data().enkyori)
-                store.getState().userPartner = document.data().enkyori
-                console.log("自分側から見た相手の距離：" , store.getState().strDistance  )
-              }else if (inputFlg == 2){
-                setPartnerUser(document.data().enkyori)
-                store.getState().partnerUser = document.data().enkyori
-                console.log("相手側から見た自分の距離：" , store.getState().strDistance  )
-              } 
-              break
-            }
+    const GetLocalResult = CONST_AISYOU_KANTEI_DATA_KYORI.filter(test_item => (test_item.Num == RelationshipNum))
+    console.log("★GetLocalResult : " , GetLocalResult)
+    console.log("★RelationshipNum : " , RelationshipNum)
+    // バックドロップを閉じる
+    setOpen(false)
+    console.log(GetLocalResult[0].Num , "で番号が一致しているため相性の距離情報を代入")
+    console.log("★",store.getState().strDistance)
+    switch(store.getState().strDistance){
+      case "(近距離)":
+        if (inputFlg == 1) {
+          setUserPartner(GetLocalResult[0].kinkyori)
+          store.getState().userPartner = GetLocalResult[0].kinkyori
+          console.log("自分側から見た相手の距離：" , store.getState().strDistance  )
+        }else if (inputFlg == 2){
+          setPartnerUser(GetLocalResult[0].kinkyori)
+          store.getState().partnerUser = GetLocalResult[0].kinkyori
+          console.log("相手側から見た自分の距離：" , store.getState().strDistance  )
         }
-      })
-    })
+        break 
+        
+      case "(中距離)":
+        if (inputFlg == 1) {
+          setUserPartner(GetLocalResult[0].tyuukyori)
+          store.getState().userPartner = GetLocalResult[0].tyuukyori
+          console.log("自分側から見た相手の距離：" , store.getState().strDistance  )
+        }else if (inputFlg == 2){
+          setPartnerUser(GetLocalResult[0].tyuukyori)
+          store.getState().partnerUser = GetLocalResult[0].tyuukyori
+          console.log("相手側から見た自分の距離：" , store.getState().strDistance  )
+        } 
+        break
+
+      case "(遠距離)":
+        if (inputFlg == 1) {
+          setUserPartner(GetLocalResult[0].enkyori)
+          store.getState().userPartner = GetLocalResult[0].enkyori
+          console.log("自分側から見た相手の距離：" , store.getState().strDistance  )
+        }else if (inputFlg == 2){
+          setPartnerUser(GetLocalResult[0].enkyori)
+          store.getState().partnerUser = GetLocalResult[0].enkyori
+          console.log("相手側から見た自分の距離：" , store.getState().strDistance  )
+        } 
+        break
+      
+      case "":
+        if (inputFlg == 1) {
+          setUserPartner(GetLocalResult[0].enkyori)
+          store.getState().userPartner = GetLocalResult[0].enkyori
+          console.log("自分側から見た相手の距離：" , store.getState().strDistance  )
+        }else if (inputFlg == 2){
+          setPartnerUser(GetLocalResult[0].enkyori)
+          store.getState().partnerUser = GetLocalResult[0].enkyori
+          console.log("相手側から見た自分の距離：" , store.getState().strDistance  )
+        } 
+        break
+      }
+    // getDocs(collection(firestore, AisyouKanteiDataKyori)).then((querySnapshot)=>{
+    //   querySnapshot.forEach((document) => {
+    //     if(document.data().Num == RelationshipNum){
+    //       console.log("このタイミングで取得できた！")
+
+    //       // バックドロップを閉じる
+    //       setOpen(false)
+
+    //       console.log(document.data().Num , "で番号が一致しているため相性の距離情報を代入")
+    //       const aisyoukyoriRef = doc(firestore , AisyouKanteiDataKyori , document.id)
+
+    //       switch(store.getState().strDistance){
+    //         case "(近距離)":
+    //           if (inputFlg == 1) {
+    //             setUserPartner(document.data().kinkyori)
+    //             store.getState().userPartner = document.data().kinkyori
+    //             console.log("自分側から見た相手の距離：" , store.getState().strDistance  )
+    //           }else if (inputFlg == 2){
+    //             setPartnerUser(document.data().kinkyori)
+    //             store.getState().partnerUser =document.data().kinkyori
+    //             console.log("相手側から見た自分の距離：" , store.getState().strDistance  )
+    //           }
+    //           break 
+              
+    //         case "(中距離)":
+    //           if (inputFlg == 1) {
+    //             setUserPartner(document.data().tyuukyori)
+    //             store.getState().userPartner = document.data().tyuukyori
+    //             console.log("自分側から見た相手の距離：" , store.getState().strDistance  )
+    //           }else if (inputFlg == 2){
+    //             setPartnerUser(document.data().tyuukyori)
+    //             store.getState().partnerUser = document.data().tyuukyori
+    //             console.log("相手側から見た自分の距離：" , store.getState().strDistance  )
+    //           } 
+    //           break
+      
+    //         case "(遠距離)":
+    //           if (inputFlg == 1) {
+    //             setUserPartner(document.data().enkyori)
+    //             store.getState().userPartner = document.data().enkyori
+    //             console.log("自分側から見た相手の距離：" , store.getState().strDistance  )
+    //           }else if (inputFlg == 2){
+    //             setPartnerUser(document.data().enkyori)
+    //             store.getState().partnerUser = document.data().enkyori
+    //             console.log("相手側から見た自分の距離：" , store.getState().strDistance  )
+    //           } 
+    //           break
+    //         }
+    //     }
+    //   })
+    // })
   }
 
   // 相性鑑定データを取得
   const getAisyouKanteiData = (RelationshipNum) => {
 
     const firestore = firebaseApp.firestore
-    getDocs(collection(firestore, AisyouKanteiData)).then((querySnapshot)=>{
-      querySnapshot.forEach((document) => {
-        if(document.data().Num == RelationshipNum){
-          console.log(document.data().Num , "で番号が一致しているため相性鑑定情報を代入")
-          const aisyoukanteiRef = doc(firestore , AisyouKanteiData , document.id)
+    const GetLocalResult = CONST_AISYOU_KANTEI_DATA.filter(test_item => (test_item.Num == RelationshipNum))
+    console.log("GetLocalResult:",GetLocalResult)
+    // 相性鑑定データを代入
+    // 1.関係を代入
+    console.log("★",GetLocalResult[0].kankei)
+    setKankei(GetLocalResult[0].kankei)
+    store.getState().partnerKankei = GetLocalResult[0].kankei
 
-          // 相性鑑定データを代入
-          // 1.関係を代入
-          console.log("★",document.data().kankei)
-          setKankei(document.data().kankei)
-          store.getState().partnerKankei = document.data().kankei
+    // 2.基本的な相性を代入
+    console.log("★",GetLocalResult[0].gutaitekina_aisyou)
+    setKihon(GetLocalResult[0].gutaitekina_aisyou)
+    store.getState().partnerKihon = GetLocalResult[0].gutaitekina_aisyou
 
-          // 2.基本的な相性を代入
-          console.log("★",document.data().gutaitekin_aisyou)
-          setKihon(document.data().gutaitekin_aisyou)
-          store.getState().partnerKihon = document.data().gutaitekin_aisyou
+    // 3.恋愛相性を代入
+    console.log("★",GetLocalResult[0].renai_aisyou)
+    setRenai(GetLocalResult[0].renai_aisyou)
+    store.getState().partnerRenai = GetLocalResult[0].renai_aisyou
 
-          // 3.恋愛相性を代入
-          console.log("★",document.data().renai_aisyou)
-          setRenai(document.data().renai_aisyou)
-          store.getState().partnerRenai = document.data().renai_aisyou
+    // 4.仕事の相性を代入
+    console.log("★",GetLocalResult[0].sigoto_aisyou)
+    setSigoto(GetLocalResult[0].sigoto_aisyou)
+    store.getState().partnerShigoto = GetLocalResult[0].sigoto_aisyou
 
-          // 4.仕事の相性を代入
-          console.log("★",document.data().sigoto_aisyou)
-          setSigoto(document.data().sigoto_aisyou)
-          store.getState().partnerShigoto = document.data().sigoto_aisyou
-        }
-      })
-    })
+    // getDocs(collection(firestore, AisyouKanteiData)).then((querySnapshot)=>{
+    //   querySnapshot.forEach((document) => {
+    //     if(document.data().Num == RelationshipNum){
+    //       console.log(document.data().Num , "で番号が一致しているため相性鑑定情報を代入")
+    //       const aisyoukanteiRef = doc(firestore , AisyouKanteiData , document.id)
+
+    //       // 相性鑑定データを代入
+    //       // 1.関係を代入
+    //       console.log("★",document.data().kankei)
+    //       setKankei(document.data().kankei)
+    //       store.getState().partnerKankei = document.data().kankei
+
+    //       // 2.基本的な相性を代入
+    //       console.log("★",document.data().gutaitekin_aisyou)
+    //       setKihon(document.data().gutaitekin_aisyou)
+    //       store.getState().partnerKihon = document.data().gutaitekin_aisyou
+
+    //       // 3.恋愛相性を代入
+    //       console.log("★",document.data().renai_aisyou)
+    //       setRenai(document.data().renai_aisyou)
+    //       store.getState().partnerRenai = document.data().renai_aisyou
+
+    //       // 4.仕事の相性を代入
+    //       console.log("★",document.data().sigoto_aisyou)
+    //       setSigoto(document.data().sigoto_aisyou)
+    //       store.getState().partnerShigoto = document.data().sigoto_aisyou
+    //     }
+    //   })
+    // })
   }
 
   const getCalcAisyou = () => {
-  // 二人の相性を算出
+    // 二人の相性を算出
     var AfterYadoNum
     var AfterPartnerYadoNum
 
